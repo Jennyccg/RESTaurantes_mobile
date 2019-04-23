@@ -34,7 +34,7 @@ public class LogIn extends AppCompatActivity {
         //Intent i = new Intent(this, RestaurantInfo.class);
         //startActivity(i);
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
