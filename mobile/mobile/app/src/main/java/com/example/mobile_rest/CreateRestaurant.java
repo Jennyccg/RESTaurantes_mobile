@@ -31,7 +31,7 @@ public class CreateRestaurant extends AppCompatActivity {
     long latitud;
     long longitud;
 
-
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -46,7 +46,7 @@ public class CreateRestaurant extends AppCompatActivity {
             }
 
         }
-    }
+    }*/
 
 
     private boolean checkComplition(){
