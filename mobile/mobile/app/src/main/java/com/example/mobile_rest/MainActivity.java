@@ -13,14 +13,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createRestauranrDEBUG();
     }
-
-
 
     // Evento: Gomap
     public void Gomap(View view) {
         Intent siguiente = new Intent(this, map.class);
         startActivity(siguiente);
+    }
+
+    public void createRestauranrDEBUG(){
+        Intent i = new Intent(this, CreateRestaurant.class);
+        startActivity(i);
+    }
+
+    public void debugLogIn(){
+        Intent i = new Intent(this, LogIn.class);
+        startActivity(i);
     }
 
 }

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateRestaurant">
+
+    <ImageButton
+        android:id="@+id/Background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:srcCompat="@mipmap/background" />
+
+    <ImageView
+        android:id="@+id/newProfileImg"
+        android:layout_width="131dp"
+        android:layout_height="123dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="59dp"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="150dp"
+        android:onClick="getImage"
+        app:layout_constraintBottom_toTopOf="@+id/newDescriptionRest"
+        app:layout_constraintEnd_toStartOf="@+id/newLocationTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@android:drawable/ic_menu_upload" />
+
+    <Button
+        android:id="@+id/submitNewRestaurant"
+        android:layout_width="117dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="33dp"
+        android:text="done"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
+
+    <EditText
+        android:id="@+id/newRestName"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="21dp"
+        android:ems="10"
+        android:hint="Nombre del restaurante"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/newLocationTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newProfileImg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/newLocationTitle"
+        android:layout_width="0dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="128dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/newDescriptionRest"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/newProfileImg"
+        app:layout_constraintTop_toBottomOf="@+id/newRestName">
+
+        <TextView
+            android:id="@+id/newLocTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Location"
+            android:textAlignment="viewStart" />
+
+        <ImageView
+            android:id="@+id/newLocation"
+            android:layout_width="58dp"
+            android:layout_height="60dp"
+            app:srcCompat="@android:drawable/ic_menu_mylocation"
+            tools:layout_editor_absoluteX="319dp"
+            tools:layout_editor_absoluteY="168dp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginBottom="23dp"
+        android:background="@color/common_google_signin_btn_text_light_default"
+        android:includeFontPadding="false"
+        android:text="galeria del restaurante"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/submitNewRestaurant"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newDescriptionRest" />
+
+    <EditText
+        android:id="@+id/newDescriptionRest"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="27dp"
+        android:layout_marginEnd="27dp"
+        android:layout_marginBottom="181dp"
+        android:background="@color/common_google_signin_btn_text_dark_disabled"
+        android:ems="10"
+        android:hint="Descripción del restaurante..."
+        android:inputType="textMultiLine"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newProfileImg" />
+
+</android.support.constraint.ConstraintLayout>

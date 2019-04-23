@@ -27,8 +27,8 @@ public class CreateAccount extends AppCompatActivity {
 
         if(password.matches(rePassword)){
             if(uploadAccount(name, password, rePassword)) {
-                //Intent i = new Intent(this, RestaurantInfo.class);
-                //startActivity(i);
+                Intent i = new Intent(this, RestaurantInfo.class);
+                startActivity(i);
             }
 
         } else {
