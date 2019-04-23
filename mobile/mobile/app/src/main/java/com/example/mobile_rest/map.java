@@ -6,10 +6,12 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,12 +25,17 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
+
+    Rest_Data marcaRest= new Rest_Data();
+
+    boolean doubleClick=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +44,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
 
+        // Si funciona la conexión
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getApplicationContext());
         if (status == ConnectionResult.SUCCESS) {
 
@@ -63,7 +71,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
-
+// geolocalización por el boton
     public void miUbicacion(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "Si hay permisos", Toast.LENGTH_LONG).show();
@@ -72,6 +80,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_FINE_LOCATION);
+
             }
 
         }
@@ -80,19 +89,29 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     }
 
 
+    // permitir la geolocalizacion verifica permisos
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         switch (requestCode) {
             case MY_PERMISSION_FINE_LOCATION:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                     if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+
+
                         mMap.setMyLocationEnabled(true);
 
+                        Toast.makeText(getApplicationContext(), "permisos de granted", Toast.LENGTH_LONG).show();
                     } else
-                        Toast.makeText(getApplicationContext(), "reuiere permisos de granted", Toast.LENGTH_LONG).show();
-                    finish();
+                        Toast.makeText(getApplicationContext(), "requiere permisos de granted", Toast.LENGTH_LONG).show();
+                    //finish();
+
                 }
                 break;
 
@@ -128,11 +147,21 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         mMap.setIndoorEnabled(false);
         mMap.setTrafficEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
+        Toast.makeText(getApplicationContext(), "onmapredy", Toast.LENGTH_LONG).show();
         //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.builder().target));
 
+        // mo
+        marcaRest.latitude=9.86034;
+        marcaRest.longitude=-83.76850;
+        marcaRest.name="Pizza";
 
+        MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
 
+        marcaRest.latitude=9.8998;
+        marcaRest.longitude=-83.6789;
+        marcaRest.name="vregv";
+
+        MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
 
         // Add a marker in Sydney and move the camera
         //ubicación usuario
@@ -145,24 +174,108 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
     }
 
+// Marcar puntos
+
+    public void MostarMarcador(GoogleMap googleMap,  String valorDesc, double valorLat, double valorLng)  {
+
+
+
+        final LatLng punto1 = new LatLng(valorLat,valorLng);
+        mMap.addMarker(new MarkerOptions().position(punto1).title(valorDesc).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
+
+       // sRest.add("0"+ " "+ valorDesc+" "+String.valueOf(valorLat)+ " "+String.valueOf(valorLng));
+
+        int zoomlevel = 16;
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(punto1,zoomlevel));
+
+//  **************************************************
+// Se utilizará otro Evento  Click sobre el Marker - Restaurante en el mapa
+//   ******************************************************
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Integer clickCount = (Integer) marker.getTag();
+                if(doubleClick){
+                    Intent det= new Intent(map.this, RestaurantInfo.class);
+                    startActivity(det);
+                }
+                else{
+                    doubleClick=true;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            doubleClick= false;
+                        }
+                    }, 1500);
+                }
+                Toast.makeText(getApplicationContext(),marcaRest.name, Toast.LENGTH_LONG).show();
+                return false;
+            }
+
+        });
+
+
+
+//   ******************************************************
+// Se utilizará otro Evento para pintar  Marcas (marker) - Restaurante en el mapa
+//   ******************************************************
+
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+
+
+                Toast.makeText(getApplicationContext(),String.valueOf(latLng.latitude), Toast.LENGTH_LONG).show();
+
+
+            }
+        });
+
+
+
+
+
+
+//   ******************************************************
+// Se utilizará otro Evento global  onInfoWindowClick - Restaurante en el mapa
+//   ******************************************************
+
+/*     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+         @Override
+         public void onInfoWindowClick(Marker marker) {
+             Toast.makeText(getApplicationContext()," onInforWindowClick", Toast.LENGTH_LONG).show();
+         }
+     });
+
+*/
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Toast.makeText(getApplicationContext(),"("+ String.valueOf(latLng.latitude)  + String.valueOf(latLng.longitude)+ ")", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
 
     // Evento: Gomap
     public void GoSearch(View view) {
         Intent siguiente = new Intent(this, Search.class);
         startActivity(siguiente);
-        finish();
+
     }
 
     public void Goadd(View view) {
         Intent siguiente = new Intent(this, Add.class);
         startActivity(siguiente);
-        finish();
+
     }
 
     public void restaurants(View view) {
         Intent siguiente = new Intent(this, restaurants.class);
         startActivity(siguiente);
-        finish();
+
     }
 }

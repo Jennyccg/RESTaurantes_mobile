@@ -11,7 +11,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -20,17 +19,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateRestaurant"></activity>
-        <activity android:name=".RestaurantInfo" />
+        <activity android:name=".RestaurantInfo"></activity>
         <activity android:name=".CreateAccount" />
         <activity android:name=".LogIn" />
         <activity android:name=".Details" />
-        <activity android:name=".Details"></activity>
         <activity android:name=".restaurants" />
         <activity android:name=".Add" />
         <activity android:name=".Search" />
-        <activity android:name=".RestaurantInfo" />
-        <activity android:name=".LogIn" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -53,10 +48,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
-
     </application>
 
 </manifest>
