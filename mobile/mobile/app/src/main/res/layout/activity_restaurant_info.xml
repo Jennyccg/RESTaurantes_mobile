@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RestaurantInfo">
+
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        app:srcCompat="@mipmap/background" />
+
+    <ImageView
+        android:id="@+id/profileImg"
+        android:layout_width="0dp"
+        android:layout_height="123dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="27dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/stars"
+        app:layout_constraintEnd_toStartOf="@+id/stars"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@drawable/ic_launcher_background" />
+
+    <LinearLayout
+        android:id="@+id/stars"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="54dp"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/restaurantDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/profileImg"
+        app:layout_constraintTop_toBottomOf="@+id/profileImg">
+
+        <ImageView
+            android:id="@+id/firstStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="rateStar"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="203dp" />
+
+        <ImageView
+            android:id="@+id/secondStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="rateStar"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="203dp" />
+
+        <ImageView
+            android:id="@+id/thirdStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="rateStar"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="203dp" />
+
+        <ImageView
+            android:id="@+id/fourthStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="rateStar"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="203dp" />
+
+        <ImageView
+            android:id="@+id/fifthStar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="rateStar"
+            app:srcCompat="@android:drawable/btn_star_big_on"
+            tools:layout_editor_absoluteX="37dp"
+            tools:layout_editor_absoluteY="203dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/restaurantTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="41dp"
+        android:layout_marginEnd="16dp"
+        android:text="Nombre del restaurante"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/profileImg"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/restaurantDescription"
+        android:layout_width="0dp"
+        android:layout_height="88dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:text="Descripcion del restaurante"
+        app:layout_constraintBottom_toTopOf="@+id/comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stars" />
+
+    <TextView
+        android:id="@+id/tituloComentarios"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Comentarios"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/comments"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ListView
+        android:id="@+id/comments"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="59dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/restaurantDescription" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="301dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Comentario"
+            android:inputType="textLongMessage|textAutoCorrect|textMultiLine|text"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="373dp" />
+
+        <ImageButton
+            android:id="@+id/sendComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:onClick="postComment"
+            app:srcCompat="@android:drawable/ic_menu_send" />
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
