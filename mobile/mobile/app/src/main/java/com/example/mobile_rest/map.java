@@ -198,7 +198,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
             public boolean onMarkerClick(Marker marker) {
                 Integer clickCount = (Integer) marker.getTag();
                 if(doubleClick){
-                    Intent det= new Intent(map.this, Details.class);
+                    Intent det= new Intent(map.this, RestaurantInfo.class);
                     startActivity(det);
                 }
                 else{

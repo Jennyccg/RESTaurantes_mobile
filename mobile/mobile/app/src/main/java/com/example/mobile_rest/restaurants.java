@@ -80,7 +80,7 @@ public class restaurants extends AppCompatActivity {
 
         // Toast.makeText(this, posicion, Toast.LENGTH_SHORT).show();
 
-        Intent siguiente = new Intent( this,Details.class);
+        Intent siguiente = new Intent( this,RestaurantInfo.class);
 
         // envia un parametros
         siguiente.putExtra("nombre",nameR);

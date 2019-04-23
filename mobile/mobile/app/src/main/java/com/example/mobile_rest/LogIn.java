@@ -26,6 +26,8 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void singIn(View view){
+        Intent siguiente = new Intent(this, map.class);
+        startActivity(siguiente);
 
     }
 

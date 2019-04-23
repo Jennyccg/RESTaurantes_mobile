@@ -23,6 +23,8 @@
         <activity android:name=".restaurants" />
         <activity android:name=".Add" />
         <activity android:name=".Search" />
+        <activity android:name=".RestaurantInfo" />
+        <activity android:name=".LogIn" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -45,6 +47,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+
     </application>
 
 </manifest>
