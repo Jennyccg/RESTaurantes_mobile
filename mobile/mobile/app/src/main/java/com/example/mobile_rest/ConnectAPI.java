@@ -189,8 +189,11 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             JSONArray jsonArray = new JSONArray(json.getString("restaurants"));
             for (int i = 0; i < jsonArray.length(); i++){
                 JSONObject jsonElement = jsonArray.getJSONObject(i);
-                //restaurantes.add(new Rest_Data(json.toString()));
+
                 Log.i("Log", jsonElement.toString());
+                //Rest_Data a = new Rest_Data(jsonElement.toString());
+                restaurantes.add(new Rest_Data(jsonElement.toString()));
+
             }
 
         } catch (JSONException e) {
@@ -232,15 +235,23 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         String url = "http://restaurants-tec.herokuapp.com/restaurants/"+id;
 
         String response = null;
+        Rest_Data restaurant = null;
         try {
             response = execute(url, "GET", "").get();
             Log.i("REST", response);
+
+            JSONObject json = new JSONObject(response);
+            json = new JSONObject(json.getString("data"));
+            restaurant = new Rest_Data(json.toString());
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        Rest_Data restaurant = new Rest_Data(response);
+
         return restaurant;
     }
 

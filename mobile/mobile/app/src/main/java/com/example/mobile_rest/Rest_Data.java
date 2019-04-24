@@ -104,7 +104,6 @@ public class Rest_Data {
 
         try {
             json = new JSONObject(data);
-            json = new JSONObject(json.getString("data"));
 
             setId(json.getString("_id"));
             setName(json.getString("name"));
