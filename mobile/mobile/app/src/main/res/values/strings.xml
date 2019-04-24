@@ -4,6 +4,20 @@
     <string name="title1">Restaurantes</string>
     <string name="txt_ListarR">Restaurantes</string>
     <string name="restaurants">Restaurants</string>
+    <string-array name="prices">
+        <item>CHEAP</item>
+        <item>AFFORDABLE</item>
+        <item>EXPENSIVE</item>
+    </string-array>
+
+    <string-array name="categories">
+        <item>FAST FOOD</item>
+        <item>GOURMET</item>
+    </string-array>
+
+
+
+
 
 
 </resources>

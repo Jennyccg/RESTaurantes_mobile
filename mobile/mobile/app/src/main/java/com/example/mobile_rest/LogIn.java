@@ -77,7 +77,7 @@ public class LogIn extends AppCompatActivity {
 
     public void enterApp(View view){
         //TODO Este metodo se usa para entrar a la app despues de verificar el usuario
-        Intent i = new Intent(this, RestaurantInfo.class);
+        Intent i = new Intent(this, map.class);
         startActivity(i);
     }
 
