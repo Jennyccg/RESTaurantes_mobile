@@ -1,5 +1,6 @@
 package com.example.mobile_rest;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,6 +23,8 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ConnectAPI extends AsyncTask <String, String, String> {
     @Override
@@ -103,7 +106,8 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         return true;
     }
 
-    public boolean logIn(String email, String password)  {
+
+    public String logIn(String email, String password)  {
         String url = "http://restaurants-tec.herokuapp.com/users/sessions/"+email+"/"+password+"/REGULAR";
         String response = null;
         try {
@@ -113,7 +117,23 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return checkError(response);
+
+        String session = null;
+
+        if(checkError(response)){
+            try {
+                JSONObject json = new JSONObject(response);
+                json = new JSONObject(json.getString("data"));
+                Log.i("Loga", json.getString("session"));
+                session = json.getString("session");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return session;
     }
 
     public void requestPassword(String email){

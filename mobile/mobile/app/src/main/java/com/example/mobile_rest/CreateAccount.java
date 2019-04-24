@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 public class CreateAccount extends AppCompatActivity {
 
-    private void creatDialogBox(String title, String message){
+    private void createDialogBox(String title, String message){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message).setCancelable(true);
@@ -17,6 +17,17 @@ public class CreateAccount extends AppCompatActivity {
         alertDialog.show();
     }
 
+
+    private boolean logIn(String email, String password){
+        ConnectAPI connectAPI = new ConnectAPI();
+        String session = connectAPI.logIn(email, password);
+
+        if(session == null){
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     private boolean uploadAccount(String name, String password, String email){
         ConnectAPI connectAPI = new ConnectAPI();
@@ -27,14 +38,20 @@ public class CreateAccount extends AppCompatActivity {
 
         if(password.matches(rePassword)){
             if(uploadAccount(name, password, email)) {
-                Intent i = new Intent(this, RestaurantInfo.class);
-                startActivity(i);
+                if(logIn(email, password)) {
+
+                    Intent i = new Intent(this, RestaurantInfo.class);
+                    startActivity(i);
+
+                } else {
+                    createDialogBox("Error", "Ocurrio un problema iniciando sesión.");
+                }
             } else {
-                creatDialogBox("Error", "Ocurrio un problema creando la cuenta.");
+                createDialogBox("Error", "Ocurrio un problema creando la cuenta.");
             }
 
         } else {
-            creatDialogBox("Contraseña incorrecta", "Las contraseñas que se escribieron no coinciden.");
+            createDialogBox("Contraseña incorrecta", "Las contraseñas que se escribieron no coinciden.");
         }
     }
 
@@ -52,7 +69,7 @@ public class CreateAccount extends AppCompatActivity {
         String emailString = email.getText().toString();
 
         if(passwordString.isEmpty() || rePasswordString.isEmpty() || nameString.isEmpty() || emailString.isEmpty()){
-            creatDialogBox("Espacio vacio", "Se ha dejado un espacio sin escribir.");
+            createDialogBox("Espacio vacio", "Se ha dejado un espacio sin escribir.");
         } else {
             checkPassword(nameString, passwordString, rePasswordString, emailString);
         }
