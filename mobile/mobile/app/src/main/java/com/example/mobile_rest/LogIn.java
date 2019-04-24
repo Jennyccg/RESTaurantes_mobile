@@ -7,27 +7,34 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LogIn extends AppCompatActivity {
 
     TextView email;
     TextView password;
 
-    public void recoverPassword(View view){
+
+    private void createAlertDialog(String title, String content){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Prueba");
-        alertDialogBuilder.setMessage("La contraseña ha sido recuperada").setCancelable(true);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(content).setCancelable(true);
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
-    public void createAccount(View view){
-        //Intent i = new Intent(this, CreateAccount.class);
-        //startActivity(i);
-        Log.i("Loga" , "Empezando");
-        String url = "http://restaurants-tec.herokuapp.com/users/sessions/kevin.daniel277@gmail.com/12345/REGULAR";
+    public void recoverPassword(View view){
         ConnectAPI connectAPI = new ConnectAPI();
-        connectAPI.doInBackground(url);
+        createAlertDialog("Contraseña recuperada", "Su contraseña a sido enviada al correo.");
+        connectAPI.requestPassword("kevin.daniel277@gmail.com");
+
+        password.setText("");
+        email.setText("");
+    }
+
+    public void createAccount(View view){
+        Intent siguiente = new Intent(this, CreateAccount.class);
+        startActivity(siguiente);
     }
 
     public void syncFacebook(View view){
@@ -35,13 +42,17 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void singIn(View view){
-        Intent siguiente = new Intent(this, map.class);
-        startActivity(siguiente);
+        ConnectAPI connectAPI = new ConnectAPI();
+        Boolean success = connectAPI.logIn(email.getText().toString(), password.getText().toString());
+        //Boolean success = connectAPI.logIn("kevin.daniel277@gmail.com", "345");
 
 
-
-
-
+        if(success) {
+            Intent siguiente = new Intent(this, map.class);
+            startActivity(siguiente);
+        } else {
+            createAlertDialog("Error", "Correo o contraseñas erroneas.");
+        }
     }
 
     public void enterApp(View view){

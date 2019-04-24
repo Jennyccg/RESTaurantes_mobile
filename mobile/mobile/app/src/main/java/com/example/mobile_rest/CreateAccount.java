@@ -19,16 +19,18 @@ public class CreateAccount extends AppCompatActivity {
 
 
     private boolean uploadAccount(String name, String password, String email){
-        //Sube cuenta a API
-        return true;
+        ConnectAPI connectAPI = new ConnectAPI();
+        return connectAPI.createAccount(name, email, password);
     }
 
     private void checkPassword(String name, String password, String rePassword, String email){
 
         if(password.matches(rePassword)){
-            if(uploadAccount(name, password, rePassword)) {
+            if(uploadAccount(name, password, email)) {
                 Intent i = new Intent(this, RestaurantInfo.class);
                 startActivity(i);
+            } else {
+                creatDialogBox("Error", "Ocurrio un problema creando la cuenta.");
             }
 
         } else {
