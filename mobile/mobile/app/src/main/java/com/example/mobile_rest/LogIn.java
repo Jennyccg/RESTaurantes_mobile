@@ -42,7 +42,6 @@ public class LogIn extends AppCompatActivity {
 
         ConnectAPI connectAPI = new ConnectAPI();
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        Log.i("Logb", sharedPreferences.getString("session",null));
         connectAPI.getAllStores(sharedPreferences.getString("session", null));
 
         /*

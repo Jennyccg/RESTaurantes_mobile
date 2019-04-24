@@ -305,7 +305,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
                 if(doubleClick){
                     Intent det= new Intent(map.this, RestaurantInfo.class);
 
-                    String indice = "";
+                    String indice = ""; //TODO HACER ESTO
 
                     det.putExtra("ID", indice);
                     startActivity(det);

@@ -3,6 +3,7 @@ package com.example.mobile_rest;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -117,7 +118,10 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         restaurant.endMinute = Integer.parseInt(horaFinP.substring(ind+1,horaFinP.length()));
 
 
-
+        ConnectAPI connectAPI = new ConnectAPI();
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String session = sharedPreferences.getString("session", null);
+        connectAPI.createRestaurant(restaurant, session);
 
 
         //takeInfo ();
