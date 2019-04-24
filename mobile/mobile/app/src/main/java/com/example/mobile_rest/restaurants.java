@@ -17,6 +17,11 @@ public class restaurants extends AppCompatActivity {
 
     //ArrayList<String> sRest ;
     //ArrayList<String> tRest ;
+    Rest_Data restaU= new Rest_Data();
+    ArrayList <Rest_Data> rest= new ArrayList<>();
+
+
+
     Adapter adaptadorRestaurante;
     ListView lvRest;
     int pos;
@@ -41,11 +46,15 @@ public class restaurants extends AppCompatActivity {
 
         //lvRest.setAdapter((ListAdapter) adaptadorRestaurante);
 
-        sRest.add("Judalu");
-        sRest.add("Burger King");
+        //sRest.add("Judalu");
+        //sRest.add("Burger King");
 
-        sRest.add("Pizza Hut");
-        Toast.makeText(getApplicationContext(),String.valueOf(sRest.size()), Toast.LENGTH_LONG).show();
+        //sRest.add("Pizza Hut");
+        //Toast.makeText(getApplicationContext(),String.valueOf(sRest.size()), Toast.LENGTH_LONG).show();
+        for ( int j =0 ; j< rest.size(); j++){
+            sRest.add(rest.get(j).name);
+        }
+
         show (sRest);
 
 
@@ -58,7 +67,7 @@ public class restaurants extends AppCompatActivity {
                         int idRest;
                         String nombre="bk";
                        nombre = sRest.get(posicion);
-                        nextW(nombre);
+                        nextW(nombre, posicion);
 
 
                     }
@@ -76,7 +85,7 @@ public class restaurants extends AppCompatActivity {
 
 
 
-    public void nextW(String nameR){
+    public void nextW(String nameR, int posicion){
 
         // Toast.makeText(this, posicion, Toast.LENGTH_SHORT).show();
 
@@ -84,6 +93,7 @@ public class restaurants extends AppCompatActivity {
 
         // envia un parametros
         siguiente.putExtra("nombre",nameR);
+        siguiente.putExtra("posID",posicion);
 
 
 

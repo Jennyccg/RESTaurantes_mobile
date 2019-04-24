@@ -50,10 +50,15 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     Spinner precio;
     Spinner categoria;
     String preciesote;
+    Spinner estrellitaDondeEstas;
+    String  estrellaAparecio;
     String categoreichon;
     EditText contacto;
     EditText numero;
-
+    int horaIniH;
+    int minIniM;
+    int horaFinH;
+    int minFinM;
 
 
 
@@ -93,6 +98,27 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
 
         restaurant.nameContact.add(contacto.getText().toString());
         restaurant.valueContact.add(numero.getText().toString());
+        restaurant.score=Integer.parseInt(estrellaAparecio);
+
+
+        String horaIniP  = horaI.getText().toString();
+        int ind;
+        ind = horaIniP.indexOf(":",0);
+        restaurant.starHour = Integer.parseInt(horaIniP.substring(0,ind-1));
+        restaurant.starMinute = Integer.parseInt(horaIniP.substring(ind+1,horaIniP.length()));
+
+        System.out.println(restaurant.starHour);
+        System.out.println(restaurant.starMinute);
+
+
+        String horaFinP  = horaF.getText().toString();
+        ind = horaFinP.indexOf(":",0);
+        restaurant.endHour = Integer.parseInt(horaFinP.substring(0,ind-1));
+        restaurant.endMinute = Integer.parseInt(horaFinP.substring(ind+1,horaFinP.length()));
+
+
+
+
 
         //takeInfo ();
         Intent siguiente = new Intent(this, map.class);
@@ -164,6 +190,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         horaF= findViewById(R.id.HoraFin);
         precio= findViewById(R.id.prices);
         categoria=findViewById(R.id.tipo);
+        estrellitaDondeEstas=findViewById(R.id.estre);
         contacto=findViewById(R.id.contact);
         numero=findViewById(R.id.number);
         //______________________________________________________________________________
@@ -177,8 +204,16 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
 
         ArrayAdapter <CharSequence> adapter1= ArrayAdapter.createFromResource(this, R.array.categories, android.R.layout.simple_spinner_item);
         adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categoria.setAdapter(adapter);
+        categoria.setAdapter(adapter1);
         categoria.setOnItemSelectedListener(this);
+
+        //____________________________________________________________________________
+
+        ArrayAdapter <CharSequence> adapter2= ArrayAdapter.createFromResource(this, R.array.stars, android.R.layout.simple_spinner_item);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        estrellitaDondeEstas.setAdapter(adapter2);
+        estrellitaDondeEstas.setOnItemSelectedListener(this);
+
 
 
 
@@ -204,8 +239,10 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         if ( parent.getId()==R.id.prices){
             preciesote = parent.getItemAtPosition(position).toString();
         }
-        else{
+        else if (parent.getId()==R.id.tipo){
             categoreichon = parent.getItemAtPosition(position).toString();
+        }else{
+            estrellaAparecio = parent.getItemAtPosition(position).toString();
         }
 
     }
