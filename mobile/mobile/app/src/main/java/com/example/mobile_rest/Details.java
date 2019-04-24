@@ -14,5 +14,6 @@ public class Details extends AppCompatActivity {
 
         nameT = getIntent().getStringExtra("nombre");
         Toast.makeText(getApplicationContext(),nameT, Toast.LENGTH_LONG).show();
+
     }
 }
