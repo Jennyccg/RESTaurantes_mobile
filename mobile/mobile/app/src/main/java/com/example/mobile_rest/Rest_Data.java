@@ -1,5 +1,10 @@
 package com.example.mobile_rest;
 
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 public class Rest_Data {
@@ -16,6 +21,45 @@ public class Rest_Data {
     int endMinute;
     ArrayList nameContact;
     ArrayList valueContact;
+
+
+    public Rest_Data(String data){
+        JSONObject json = null;
+        try {
+            json = new JSONObject(data);
+
+            setId(json.getString("id"));
+            setName(json.getString("name"));
+
+            //No se como hacer estos
+            setEndHour(Integer.parseInt(json.getString("success")));
+            setEndMinute(Integer.parseInt(json.getString("success")));
+            setStarHour(Integer.parseInt(json.getString("success")));
+            setStarMinute(Integer.parseInt(json.getString("success")));
+            //
+
+            JSONObject location = new JSONObject(json.getString("location"));
+            setLatitude(Double.valueOf(location.getString("latitud")));
+            setLongitude(Double.valueOf(location.getString("longitud")));
+
+            setNameContact(null);
+
+            setPrice(json.getString("price"));
+
+            setSchedule(null);
+
+
+            setType(json.getString("type"));
+
+            setValueContact(null);
+
+            //json.getString("success")
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public String getId() {
         return id;
@@ -119,6 +163,44 @@ public class Rest_Data {
 
     public void setValueContact(ArrayList valueContact) {
         this.valueContact = valueContact;
+    }
+
+    public String getJson(){
+
+        String json = "";
+        /*
+        json = "" +
+                "{\n" +
+                "        name: "+getName()+",\n" +
+                "        type: "+getType()+",\n" +
+                "        price: "+getPrice()+",\n" +
+                "        location: {\n" +
+                "            latitude: "+getLatitude()+",\n" +
+                "            longitude: "+getLongitude()+"\n" +
+                "        },\n" +
+                "        schedule: [\n" +
+                "            MONDAY: { \n" +
+                "                start: {\n" +
+                "                    hour: "+int+", \n" +
+                "                    minute: "+int+" \n" +
+                "                }\n" +
+                "                end: {\n" +
+                "                    hour: "+int +", \n" +
+                "                    minute: "+int+" \n" +
+                "                }\n" +
+                "            }\n" +
+                "            ...same for every other day of the week\n" +
+                "        ],\n" +
+                "        contacts: [\n" +
+                "            {\n" +
+                "                name: "+string+",\n" +
+                "                value: "+string+"\n" +
+                "            },\n" +
+                "            ...n contacts\n" +
+                "        ]\n" +
+                "    }";
+        */
+        return json;
     }
 }
 

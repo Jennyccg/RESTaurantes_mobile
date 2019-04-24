@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
 
 public class LogIn extends AppCompatActivity {
 
@@ -34,8 +37,18 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void createAccount(View view){
-        Intent siguiente = new Intent(this, CreateAccount.class);
-        startActivity(siguiente);
+        //Intent siguiente = new Intent(this, CreateAccount.class);
+        //startActivity(siguiente);
+
+        ConnectAPI connectAPI = new ConnectAPI();
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        Log.i("Logb", sharedPreferences.getString("session",null));
+        connectAPI.getAllStores(sharedPreferences.getString("session", null));
+
+        /*
+        Usar base 64 para codificar las imagenes.
+        Base64.encode(new File ("C:*Users*Kevin PC*Documents*GitHub*RESTaura*ic_launcher.png"));
+        */
     }
 
     public void syncFacebook(View view){
@@ -56,9 +69,8 @@ public class LogIn extends AppCompatActivity {
             editor.commit();
 
 
-            Log.i("Logb", sharedPreferences.getString("session",null));
-            Intent siguiente = new Intent(this, map.class);
-            startActivity(siguiente);
+            //Intent siguiente = new Intent(this, map.class);
+            //startActivity(siguiente);
         }
 
     }

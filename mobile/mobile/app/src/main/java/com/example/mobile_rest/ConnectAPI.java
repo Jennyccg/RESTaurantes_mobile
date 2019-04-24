@@ -20,6 +20,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import org.jsoup.Jsoup;
@@ -36,10 +37,23 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         HttpURLConnection httpURLConnection;
 
         try {
-            Log.i("Loga", urls[1]);
+            //Log.i("Loga", urls[0]);
+            //Log.i("Loga", urls[1]);
+            //Log.i("Loga", urls[2]);
+
             url = new URL(urls[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(urls[1]);
+
+            if(urls[1] != "GET") {
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+                outputStreamWriter.write(urls[2]);
+                outputStreamWriter.flush();
+                outputStreamWriter.close();
+                outputStream.close();
+            }
+
             InputStream inputStream = httpURLConnection.getInputStream();
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
@@ -49,6 +63,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
                 result += current;
                 data = inputStreamReader.read();
             }
+
             Log.i("Log", "Charging success.");
             return result;
 
@@ -57,14 +72,16 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Log.i("Log", "Charging error.");
 
+        Log.i("Log", "Charging error.");
         return null;
     }
-/*
+
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
+        Log.i("Loga", result);
+        /*
         Log.i("Loga", result);
 
         try {
@@ -78,9 +95,9 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("Log", "Finished parsing.");
+        Log.i("Log", "Finished parsing.");*/
 
-    }*/
+    }
 
     private boolean checkError(String data){
         Log.i("Loga", data);
@@ -111,7 +128,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         String url = "http://restaurants-tec.herokuapp.com/users/sessions/"+email+"/"+password+"/REGULAR";
         String response = null;
         try {
-            response = execute(url, "POST").get();
+            response = execute(url, "POST","").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -138,14 +155,14 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
     public void requestPassword(String email){
         String url = "http://restaurants-tec.herokuapp.com/users/"+email;
-        execute(url, "GET");
+        execute(url, "GET", "");
     }
 
     public boolean createAccount(String name, String email, String password){
         String url = "http://restaurants-tec.herokuapp.com/users/"+name+"/"+email+"/"+password;
         String response = null;
         try {
-            response = execute(url, "POST").get();
+            response = execute(url, "POST", "").get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -155,4 +172,135 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     }
 
 
+    //Devuelve una lista de Rest_Data con todos los restaurantes
+    public ArrayList<Rest_Data> getAllStores(String session){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/all";
+        ArrayList<Rest_Data> restaurantes = new ArrayList<Rest_Data>();
+
+        try {
+            String respuesta = execute(url, "GET", "").get();
+            JSONArray jsonArray = new JSONArray(session);
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject json = jsonArray.getJSONObject(i);
+                restaurantes.add(new Rest_Data(json.toString()));
+                Log.i("Log", json.toString());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return restaurantes;
+    }
+
+    //Crea un restaurante por medio de un objeto restaurant
+    public boolean createRestaurant(Rest_Data restaurant, String session){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurant.getJson();
+        String json = "{\"session\" : \""+session+"\"}";
+
+        String response = null;
+        try {
+            response = execute(url, "POST", json).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return checkError(response);
+    }
+
+    //Obtiene el restaurante por id
+    public Rest_Data getRestaurant(String id){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+id;
+
+        String response = null;
+        try {
+            response = execute(url, "GET", "").get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Rest_Data restaurant = new Rest_Data(response);
+        return restaurant;
+    }
+
+
+    public boolean uploadComment(String restaurantId, String comment, String session){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurantId+"/comments/"+comment;
+        String json = "{\"session\" : \""+session+"\"}";
+        String response = null;
+        try {
+            response = execute(url, "POST", json).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return checkError(response);
+    }
+
+    public ArrayList<String> getComments(String restaurantId){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+ restaurantId+"/comments";
+
+        String response = null;
+        ArrayList<String> comments = new ArrayList<String>();
+
+        try {
+            response = execute(url, "GET", "").get();
+
+            JSONObject dataJson = new JSONObject(response);
+            dataJson = new JSONObject(dataJson.getString("data"));
+
+            JSONArray jsonArray = new JSONArray(dataJson.getString("comments"));
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject json = jsonArray.getJSONObject(i);
+
+                String name = json.getString("added_by");
+                String message = json.getString("text");
+                String finalMessage = name+ ": " + message;
+
+                comments.add(finalMessage);
+                Log.i("Log", finalMessage);
+            }
+
+            //session = json.getString("session");
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return comments;
+    }
+
+    public boolean uploadStars(String restaurnatId, String score, String session){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+restaurnatId+"/scores/"+score;
+        String json = "{\"session\" : \""+session+"\"}";
+
+        String response = null;
+        try {
+            response = execute(url, "POST", json).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return checkError(response);
+
+    }
+
+
+    //Subir foto
+    //Cargar foto
 }
