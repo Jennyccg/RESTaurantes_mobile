@@ -1,17 +1,29 @@
 package com.example.mobile_rest;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 public class Rest_Data {
     String id;
     String name;
     String type;
     String price;
+    String imageUrl;
     Double latitude;
     Double longitude;
     ArrayList <String> schedule;
@@ -23,6 +35,64 @@ public class Rest_Data {
     ArrayList  <String> valueContact;
      int score;
 
+
+
+    public class DownloadTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String result = "";
+
+            try {
+                Document document = Jsoup.connect(urls[0]).get();
+                result = document.toString();
+                return result;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return "Error";
+            }
+
+
+        }
+    }
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap bitmap = null;
+
+            try {
+
+                InputStream inputStream = new java.net.URL(urls[0]).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
+    }
+
+    private Bitmap getImage(){
+        String url = imageUrl;
+
+        DownloadTask downloadTask = new DownloadTask();
+        DownloadImageTask downloadImageTask = new DownloadImageTask();
+        Bitmap bitmap = null;
+        try {
+            String data = downloadTask.execute(url).get();
+            bitmap = downloadImageTask.execute(data).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
 
     public Rest_Data(String data){
         JSONObject json = null;
@@ -54,7 +124,12 @@ public class Rest_Data {
 
             setValueContact(null);
 
-            //json.getString("success")
+
+            JSONObject images = new JSONObject(json.getString("images"));
+            JSONArray jsonArray = new JSONArray(images.toString());
+            JSONObject image = jsonArray.getJSONObject(0);
+            this.imageUrl = image.toString();
+
 
         } catch (JSONException e) {
             e.printStackTrace();

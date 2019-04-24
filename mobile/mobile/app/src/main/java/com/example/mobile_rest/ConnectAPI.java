@@ -2,6 +2,7 @@ package com.example.mobile_rest;
 
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -300,7 +301,24 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
     }
 
+    /*
+    public void uploadPhoto(String session){
+        Base64 image;
+        Base64.getUrlEncoder().encodeToString(bytes);
 
-    //Subir foto
-    //Cargar foto
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+"id"+"/images/"+"Base64";
+        String json = "{\"session\" : \""+session+"\"}";
+
+        String response = null;
+        try {
+            response = execute(url, "POST", json).get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //Base64.getUrlEncoder().encodeToString(bytes);
+    }
+    */
 }
