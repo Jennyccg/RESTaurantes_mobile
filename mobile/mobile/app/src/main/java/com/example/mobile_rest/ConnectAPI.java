@@ -222,6 +222,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         String response = null;
         try {
             response = execute(url, "GET", "").get();
+            Log.i("REST", response);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

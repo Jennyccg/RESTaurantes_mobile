@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -16,6 +17,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.telecom.Call;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -57,6 +59,12 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+
+        //Agrega restaurantes
+        ConnectAPI connectAPI = new ConnectAPI();
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        puntos = connectAPI.getAllStores(sharedPreferences.getString("session", null));
 
 
         // Si funciona la conexión
@@ -296,6 +304,10 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
                 Integer clickCount = (Integer) marker.getTag();
                 if(doubleClick){
                     Intent det= new Intent(map.this, RestaurantInfo.class);
+
+                    String indice = "";
+
+                    det.putExtra("ID", indice);
                     startActivity(det);
                 }
                 else{

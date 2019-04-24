@@ -106,12 +106,18 @@ public class Rest_Data {
             setId(json.getString("id"));
             setName(json.getString("name"));
 
-            //No se como hacer estos
-            setEndHour(Integer.parseInt(json.getString("success")));
-            setEndMinute(Integer.parseInt(json.getString("success")));
-            setStarHour(Integer.parseInt(json.getString("success")));
-            setStarMinute(Integer.parseInt(json.getString("success")));
-            //
+            JSONObject schedule = new JSONObject(json.getString("schedule"));
+            JSONArray jsonArray = new JSONArray(schedule.toString());
+
+            JSONObject days = jsonArray.getJSONObject(0);
+            JSONObject start = new JSONObject(days.getString("hour"));
+            JSONObject end = new JSONObject(days.getString("minute"));
+
+            setEndHour(Integer.parseInt(end.getString("hour")));
+            setEndMinute(Integer.parseInt(end.getString("minute")));
+            setStarHour(Integer.parseInt(start.getString("hour")));
+            setStarMinute(Integer.parseInt(start.getString("minute")));
+
 
             JSONObject location = new JSONObject(json.getString("location"));
             setLatitude(Double.valueOf(location.getString("latitud")));
@@ -130,8 +136,8 @@ public class Rest_Data {
 
 
             JSONObject images = new JSONObject(json.getString("images"));
-            JSONArray jsonArray = new JSONArray(images.toString());
-            JSONObject image = jsonArray.getJSONObject(0);
+            JSONArray jsonArrayA = new JSONArray(images.toString());
+            JSONObject image = jsonArrayA.getJSONObject(0);
             this.imageUrl = image.toString();
 
 
@@ -248,7 +254,19 @@ public class Rest_Data {
     public String getJson() {
 
         String json = "";
-        /*
+
+        ArrayList<String> contacts = getNameContact();
+        ArrayList<String> value = getValueContact();
+
+        String contactsString = "contacts: [";
+        for(int i = 0; i < contacts.size() ; ++i){
+            contactsString+= "{ name: " + contacts.get(i) + ", value:" + value.get(i) + "}";
+        }
+        contactsString += "]";
+
+        Log.i("REST", contactsString);
+
+
         json = "" +
                 "{\n" +
                 "        name: "+getName()+",\n" +
@@ -260,26 +278,59 @@ public class Rest_Data {
                 "        },\n" +
                 "        schedule: [\n" +
                 "            MONDAY: { \n" +
+            "                start: {\n" +
+                    "                    hour: "+getStarHour()+", \n" +
+                    "                    minute: "+getStarMinute()+" \n" +
+                    "                }\n" +
+                    "                end: {\n" +
+                    "                    hour: "+getEndHour() +", \n" +
+                    "                    minute: "+getEndMinute()+" \n" +
+                    "                }\n" +
+                    "            }\n" +
+                "            TUESDAY: { \n" +
                 "                start: {\n" +
-                "                    hour: "+int+", \n" +
-                "                    minute: "+int+" \n" +
+                "                    hour: "+getStarHour()+", \n" +
+                "                    minute: "+getStarMinute()+" \n" +
                 "                }\n" +
                 "                end: {\n" +
-                "                    hour: "+int +", \n" +
-                "                    minute: "+int+" \n" +
+                "                    hour: "+getEndHour() +", \n" +
+                "                    minute: "+getEndMinute()+" \n" +
                 "                }\n" +
                 "            }\n" +
-                "            ...same for every other day of the week\n" +
-                "        ],\n" +
-                "        contacts: [\n" +
-                "            {\n" +
-                "                name: "+string+",\n" +
-                "                value: "+string+"\n" +
-                "            },\n" +
-                "            ...n contacts\n" +
-                "        ]\n" +
+                "            WEDNESDAY: { \n" +
+                "                start: {\n" +
+                "                    hour: "+getStarHour()+", \n" +
+                "                    minute: "+getStarMinute()+" \n" +
+                "                }\n" +
+                "                end: {\n" +
+                "                    hour: "+getEndHour() +", \n" +
+                "                    minute: "+getEndMinute()+" \n" +
+                "                }\n" +
+                "            }\n" +
+                "            THURSDAY: { \n" +
+                "                start: {\n" +
+                "                    hour: "+getStarHour()+", \n" +
+                "                    minute: "+getStarMinute()+" \n" +
+                "                }\n" +
+                "                end: {\n" +
+                "                    hour: "+getEndHour() +", \n" +
+                "                    minute: "+getEndMinute()+" \n" +
+                "                }\n" +
+                "            }\n" +
+                "            FRIDAY: { \n" +
+                "                start: {\n" +
+                "                    hour: "+getStarHour()+", \n" +
+                "                    minute: "+getStarMinute()+" \n" +
+                "                }\n" +
+                "                end: {\n" +
+                "                    hour: "+getEndHour() +", \n" +
+                "                    minute: "+getEndMinute()+" \n" +
+                "                }\n" +
+                "            }\n" +
+                "        ],\n" + contactsString +
                 "    }";
-        */
+
+
         return json;
     }
 
