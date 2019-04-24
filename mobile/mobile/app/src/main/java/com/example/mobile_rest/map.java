@@ -306,10 +306,8 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
                 Integer clickCount = (Integer) marker.getTag();
                 if(doubleClick){
 
-<<<<<<< HEAD
-=======
-                    String indice = ""; //TODO HACER ESTO
->>>>>>> 4c744f25046cf884ecf6c7e5e861b5060cfec4bf
+
+
 
                     Intent det= new Intent(map.this, RestaurantInfo.class);
 

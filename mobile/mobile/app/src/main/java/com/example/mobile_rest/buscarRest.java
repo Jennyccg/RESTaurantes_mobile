@@ -21,6 +21,8 @@ public class buscarRest extends AppCompatActivity {
         int ubicacion_par;
         String nombre_par;
         int can_estr_par;
+        Rest_Data Rest= new Rest_Data();
+        ArrayList <Rest_Data> puntos= new ArrayList<>();
 
 
     // Declaracion de Receptores del Activity
