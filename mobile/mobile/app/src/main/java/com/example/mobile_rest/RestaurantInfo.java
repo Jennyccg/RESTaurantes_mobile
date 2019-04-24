@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -28,8 +29,6 @@ public class RestaurantInfo extends AppCompatActivity {
 
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant(id);
-
-
 
         String description = "Esto es la descripción del restaurante. " +
                 " Es una muy buena descripcion que describe con palabras" +
@@ -139,13 +138,10 @@ public class RestaurantInfo extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_info);
 
         Intent intent = getIntent();
- //HEAD
+
         //envio ID de marcador
-        String id = intent.getStringExtra("ID");
-
-
-
         id = intent.getStringExtra("ID");
- //4c744f25046cf884ecf6c7e5e861b5060cfec4bf
+        download();
+
     }
 }
