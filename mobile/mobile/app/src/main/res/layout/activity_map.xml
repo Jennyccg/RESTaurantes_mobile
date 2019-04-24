@@ -35,7 +35,7 @@
             android:onClick="restaurants"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Restaurant"
+            android:text="Rest"
             android:textColor="@android:color/holo_blue_dark" />
 
 

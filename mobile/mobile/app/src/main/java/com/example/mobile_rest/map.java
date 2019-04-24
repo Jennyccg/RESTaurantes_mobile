@@ -43,7 +43,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     private Marker marcador ;
     Double latitudA;
     Double longitudA;
-
+    String indice;
     // Areglo de restaurantes
     Rest_Data marcaRest= new Rest_Data();
     ArrayList <Rest_Data> puntos= new ArrayList<>();
@@ -274,6 +274,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
             latitudA = location.getLatitude();
             longitudA = location.getLongitude();
             agregarMarcador(latitudA, longitudA);
+
             Toast.makeText(getApplicationContext(),String.valueOf(latitudA)+ "_" +String.valueOf(longitudA) , Toast.LENGTH_LONG).show();
 
 
@@ -304,10 +305,12 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
             public boolean onMarkerClick(Marker marker) {
                 Integer clickCount = (Integer) marker.getTag();
                 if(doubleClick){
+
+
                     Intent det= new Intent(map.this, RestaurantInfo.class);
 
-                    String indice = "";
-
+                     indice =  marcaRest.id;
+                     //envio
                     det.putExtra("ID", indice);
                     startActivity(det);
                 }
@@ -360,7 +363,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
     // Evento: Gomap
     public void GoSearch(View view) {
-        Intent siguiente = new Intent(this, Search.class);
+        Intent siguiente = new Intent(this, buscarRest.class);
         startActivity(siguiente);
 
     }
@@ -375,6 +378,12 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
     public void restaurants(View view) {
         Intent siguiente = new Intent(this, restaurants.class);
+        startActivity(siguiente);
+
+    }
+
+    public void coment(View view) {
+        Intent siguiente = new Intent(this, RestaurantInfo.class);
         startActivity(siguiente);
 
     }

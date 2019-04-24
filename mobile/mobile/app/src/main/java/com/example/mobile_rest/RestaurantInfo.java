@@ -116,6 +116,7 @@ public class RestaurantInfo extends AppCompatActivity {
         setContentView(R.layout.activity_restaurant_info);
 
         Intent intent = getIntent();
+        //envio ID de marcador
         String id = intent.getStringExtra("ID");
 
 

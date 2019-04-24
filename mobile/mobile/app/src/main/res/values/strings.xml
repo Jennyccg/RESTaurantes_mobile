@@ -4,6 +4,13 @@
     <string name="title1">Restaurantes</string>
     <string name="txt_ListarR">Restaurantes</string>
     <string name="restaurants">Restaurants</string>
+    <string name="titulo_buscar">Buscar restaurantes</string>
+    <string name="tc">Tipo Comida</string>
+    <string name="pc">Precio Comida</string>
+    <string name="ur">Ubicación Resturante</string>
+    <string name="nr">Nombre Restaurante</string>
+    <string name="ce">Cantidad de estrellas</string>
+    <string name="bb">BUSCAR</string>
     <string-array name="prices">
         <item>CHEAP</item>
         <item>AFFORDABLE</item>
