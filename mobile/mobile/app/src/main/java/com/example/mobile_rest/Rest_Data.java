@@ -94,6 +94,10 @@ public class Rest_Data {
         return bitmap;
     }
 
+    public Rest_Data(){
+
+    }
+
     public Rest_Data(String data){
         JSONObject json = null;
         try {
