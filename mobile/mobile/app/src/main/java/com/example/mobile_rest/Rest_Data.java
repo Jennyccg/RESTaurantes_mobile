@@ -166,7 +166,7 @@ public class Rest_Data {
         this.valueContact = valueContact;
     }
 
-    public String getJson(){
+    public String getJson() {
 
         String json = "";
         /*
@@ -202,11 +202,13 @@ public class Rest_Data {
                 "    }";
         */
         return json;
+    }
+
     public int getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore (int score){
         this.score = score;
     }
 }
