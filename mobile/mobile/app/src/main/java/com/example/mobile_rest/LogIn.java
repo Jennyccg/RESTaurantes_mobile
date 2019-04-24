@@ -49,16 +49,16 @@ public class LogIn extends AppCompatActivity {
     public void syncFacebook(View view){
 
         ConnectAPI connectAPI = new ConnectAPI();
-        Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
-        restaurant.setName("Otro restaurante.");
-        String json = restaurant.getJson();
-        Log.i("RESTJSON", json);
+        //Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
+        //restaurant.setName("Otro restaurante.");
+        //String json = restaurant.getJson();
+        //Log.i("RESTJSON", json);
 
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         String sesion = sharedPreferences.getString("session", null);
         //connectAPI.createRestaurant(restaurant, sesion);
-        connectAPI.uploadStars("5cbfae6f31fe3921c0943d98", "1", sesion);
-
+        //connectAPI.uploadStars("5cbfae6f31fe3921c0943d98", "1", sesion);
+        connectAPI.getAllStores(sesion);
 
     }
 

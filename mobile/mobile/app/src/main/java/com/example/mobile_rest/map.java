@@ -82,18 +82,9 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         }
 
         //miUbicacion();
-
-
-
-
-
-
-
-
-
-
-
     }
+
+
     LocationListener locListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {

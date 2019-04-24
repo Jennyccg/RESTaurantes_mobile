@@ -377,7 +377,7 @@ public class Rest_Data {
                 "start:{"+
                 "hour:"+getStarHour()+","+
                 "minute:"+getStarMinute()+""+
-                "}"+
+                "},"+
                 "end:{"+
                 "hour:"+getEndHour()+","+
                 "minute:"+getEndMinute()+""+
@@ -387,7 +387,7 @@ public class Rest_Data {
                 "start:{"+
                 "hour:"+getStarHour()+","+
                 "minute:"+getStarMinute()+""+
-                "}"+
+                "},"+
                 "end:{"+
                 "hour:"+getEndHour()+","+
                 "minute:"+getEndMinute()+""+
@@ -397,7 +397,7 @@ public class Rest_Data {
                 "start:{"+
                 "hour:"+getStarHour()+","+
                 "minute:"+getStarMinute()+""+
-                "}"+
+                "},"+
                 "end:{"+
                 "hour:"+getEndHour()+","+
                 "minute:"+getEndMinute()+""+
@@ -407,7 +407,7 @@ public class Rest_Data {
                 "start:{"+
                 "hour:"+getStarHour()+","+
                 "minute:"+getStarMinute()+""+
-                "}"+
+                "},"+
                 "end:{"+
                 "hour:"+getEndHour()+","+
                 "minute:"+getEndMinute()+""+
@@ -417,7 +417,7 @@ public class Rest_Data {
                 "start:{"+
                 "hour:"+getStarHour()+","+
                 "minute:"+getStarMinute()+""+
-                "}"+
+                "},"+
                 "end:{"+
                 "hour:"+getEndHour()+","+
                 "minute:"+getEndMinute()+""+
