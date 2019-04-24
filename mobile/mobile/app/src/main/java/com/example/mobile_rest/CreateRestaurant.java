@@ -81,19 +81,19 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         restaurant.longitude=longitud;
 
         if (lun.isChecked()){
-            restaurant.schedule.add("LUNES");
+            restaurant.schedule.add("MONDAY");
         }if (mar.isChecked()){
-            restaurant.schedule.add("MARTES");
+            restaurant.schedule.add("THUESDAY");
         }if (mier.isChecked()){
-            restaurant.schedule.add("MIERCOLES");
+            restaurant.schedule.add("WENESDAY");
         }if (jue.isChecked()){
-            restaurant.schedule.add("JUEVES");
+            restaurant.schedule.add("THURSDAY");
         }if (vier.isChecked()){
-            restaurant.schedule.add("VIERNES");
+            restaurant.schedule.add("FRIDAY");
         }if (sab.isChecked()){
-            restaurant.schedule.add("SABADO");
+            restaurant.schedule.add("SATURDAY");
         }if (dom.isChecked()){
-            restaurant.schedule.add("DOMINGO");
+            restaurant.schedule.add("SUNDAY");
         }
 
         restaurant.nameContact.add(contacto.getText().toString());
