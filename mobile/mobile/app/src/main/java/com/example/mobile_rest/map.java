@@ -308,6 +308,8 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
                     String indice = ""; //TODO HACER ESTO
 
+
+
                     Intent det= new Intent(map.this, RestaurantInfo.class);
 
                      indice =  marcaRest.id;
