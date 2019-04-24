@@ -52,9 +52,10 @@ public class LogIn extends AppCompatActivity {
 
     public void syncFacebook(View view){
         ConnectAPI connectAPI = new ConnectAPI();
-        Rest_Data restaurant = connectAPI.getRestaurant("cbfae6f31fe3921c0943d98");
+        Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
 
-
+        String json = restaurant.getJson();
+        Log.i("RESTJSON", json);
     }
 
     public void singIn(View view){

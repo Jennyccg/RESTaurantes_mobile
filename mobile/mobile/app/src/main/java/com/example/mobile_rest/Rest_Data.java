@@ -31,8 +31,8 @@ public class Rest_Data {
     int starMinute;
     int endHour;
     int endMinute;
-    ArrayList <String> nameContact;
-    ArrayList  <String> valueContact;
+    ArrayList <String> nameContact = new ArrayList<String>();
+    ArrayList  <String> valueContact = new ArrayList<String>();
      int score;
 
 
@@ -99,19 +99,21 @@ public class Rest_Data {
     }
 
     public Rest_Data(String data){
+
         JSONObject json = null;
+
         try {
             json = new JSONObject(data);
+            json = new JSONObject(json.getString("data"));
 
-            setId(json.getString("id"));
+            setId(json.getString("_id"));
             setName(json.getString("name"));
 
             JSONObject schedule = new JSONObject(json.getString("schedule"));
-            JSONArray jsonArray = new JSONArray(schedule.toString());
 
-            JSONObject days = jsonArray.getJSONObject(0);
-            JSONObject start = new JSONObject(days.getString("hour"));
-            JSONObject end = new JSONObject(days.getString("minute"));
+            JSONObject day = new JSONObject(schedule.getString("MONDAY"));
+            JSONObject start = new JSONObject(day.getString("start"));
+            JSONObject end = new JSONObject(day.getString("end"));
 
             setEndHour(Integer.parseInt(end.getString("hour")));
             setEndMinute(Integer.parseInt(end.getString("minute")));
@@ -120,30 +122,61 @@ public class Rest_Data {
 
 
             JSONObject location = new JSONObject(json.getString("location"));
-            setLatitude(Double.valueOf(location.getString("latitud")));
-            setLongitude(Double.valueOf(location.getString("longitud")));
+            JSONArray coordinates = new JSONArray(location.getString("coordinates"));
+            setLatitude(coordinates.getDouble(1));
+            setLongitude(coordinates.getDouble(0));
 
-            setNameContact(null);
 
             setPrice(json.getString("price"));
-
-            setSchedule(null);
-
-
             setType(json.getString("type"));
 
             setValueContact(null);
+            setNameContact(null);
 
+            JSONArray contacts = new JSONArray(json.getString("contacts"));
+            ArrayList <String> nameContact = new ArrayList<String>();
+            ArrayList  <String> valueContact = new ArrayList<String>();
+            for (int i = 0; i < contacts.length(); i++){
+                JSONObject contactsJson = contacts.getJSONObject(i);
+                valueContact.add(contactsJson.getString("value"));
+                nameContact.add(contactsJson.getString("name"));
+            }
+            setNameContact(nameContact);
+            setValueContact(valueContact);
 
-            JSONObject images = new JSONObject(json.getString("images"));
-            JSONArray jsonArrayA = new JSONArray(images.toString());
+            setSchedule(null);
+
+            /*
+            JSONArray jsonArrayA = new JSONArray("images");
             JSONObject image = jsonArrayA.getJSONObject(0);
             this.imageUrl = image.toString();
-
+            */
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        Log.i("LOGRES", "Se hizo el restaurante.");
+
+        Log.i("LOGRES", getId());
+        Log.i("LOGRES", getName());
+        Log.i("LOGRES", getType());
+        Log.i("LOGRES", getPrice());
+        //Log.i("LOGRES", imageUrl);
+        Log.i("LOGRES", String.valueOf(longitude));
+        Log.i("LOGRES", String.valueOf(latitude));
+        Log.i("LOGRES", String.valueOf(starHour));
+        Log.i("LOGRES", String.valueOf(starMinute));
+        Log.i("LOGRES", String.valueOf(endHour));
+        Log.i("LOGRES", String.valueOf(endMinute));
+
+        for(int  i = 0; i < nameContact.size() ; ++i){
+            Log.i("LOGRES", nameContact.get(i));
+            Log.i("LOGRES", valueContact.get(i));
+        }
+
+        Log.i("LOGRES", String.valueOf(score));
 
     }
 
@@ -259,9 +292,10 @@ public class Rest_Data {
         ArrayList<String> value = getValueContact();
 
         String contactsString = "contacts: [";
-        for(int i = 0; i < contacts.size() ; ++i){
-            contactsString+= "{ name: " + contacts.get(i) + ", value:" + value.get(i) + "}";
+        for(int i = 0; i < contacts.size()-1 ; ++i){
+            contactsString+= "{ name: " + contacts.get(i) + ", value:" + value.get(i) + "},";
         }
+        contactsString+= "{ name: " + contacts.get(contacts.size()-1) + ", value:" + value.get(contacts.size()-1) + "}";
         contactsString += "]";
 
         Log.i("REST", contactsString);
@@ -269,14 +303,14 @@ public class Rest_Data {
 
         json = "" +
                 "{\n" +
-                "        name: "+getName()+",\n" +
-                "        type: "+getType()+",\n" +
-                "        price: "+getPrice()+",\n" +
+                "        name: \""+getName()+"\",\n" +
+                "        type: \""+getType()+"\",\n" +
+                "        price: \""+getPrice()+"\",\n" +
                 "        location: {\n" +
-                "            latitude: "+getLatitude()+",\n" +
-                "            longitude: "+getLongitude()+"\n" +
+            "               type: \"Point\"," +
+                "            coordinates : ["+getLongitude()+","+getLatitude()+"]\n" +
                 "        },\n" +
-                "        schedule: [\n" +
+                "        schedule: {\n" +
                 "            MONDAY: { \n" +
             "                start: {\n" +
                     "                    hour: "+getStarHour()+", \n" +
@@ -286,7 +320,7 @@ public class Rest_Data {
                     "                    hour: "+getEndHour() +", \n" +
                     "                    minute: "+getEndMinute()+" \n" +
                     "                }\n" +
-                    "            }\n" +
+                    "            },\n" +
                 "            TUESDAY: { \n" +
                 "                start: {\n" +
                 "                    hour: "+getStarHour()+", \n" +
@@ -296,7 +330,7 @@ public class Rest_Data {
                 "                    hour: "+getEndHour() +", \n" +
                 "                    minute: "+getEndMinute()+" \n" +
                 "                }\n" +
-                "            }\n" +
+                "            },\n" +
                 "            WEDNESDAY: { \n" +
                 "                start: {\n" +
                 "                    hour: "+getStarHour()+", \n" +
@@ -306,7 +340,7 @@ public class Rest_Data {
                 "                    hour: "+getEndHour() +", \n" +
                 "                    minute: "+getEndMinute()+" \n" +
                 "                }\n" +
-                "            }\n" +
+                "            },\n" +
                 "            THURSDAY: { \n" +
                 "                start: {\n" +
                 "                    hour: "+getStarHour()+", \n" +
@@ -316,7 +350,7 @@ public class Rest_Data {
                 "                    hour: "+getEndHour() +", \n" +
                 "                    minute: "+getEndMinute()+" \n" +
                 "                }\n" +
-                "            }\n" +
+                "            },\n" +
                 "            FRIDAY: { \n" +
                 "                start: {\n" +
                 "                    hour: "+getStarHour()+", \n" +
@@ -327,7 +361,7 @@ public class Rest_Data {
                 "                    minute: "+getEndMinute()+" \n" +
                 "                }\n" +
                 "            }\n" +
-                "        ],\n" + contactsString +
+                "        },\n" + contactsString +
                 "    }";
 
 
