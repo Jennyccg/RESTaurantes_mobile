@@ -41,6 +41,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     private Marker marcador ;
     Double latitudA;
     Double longitudA;
+
     // Areglo de restaurantes
     Rest_Data marcaRest= new Rest_Data();
     ArrayList <Rest_Data> puntos= new ArrayList<>();
