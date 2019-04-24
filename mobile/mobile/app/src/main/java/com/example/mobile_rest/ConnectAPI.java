@@ -1,53 +1,157 @@
 package com.example.mobile_rest;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Connection;
+import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.ExecutionException;
+
+import org.jsoup.Jsoup;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class ConnectAPI extends AsyncTask <String, String, String> {
     @Override
-    protected String doInBackground(String... params){
-        String urlString = params[0];
-        OutputStream out = null;
-        Log.i("Loga" , "Iniciando");
-        try{
-            URL url = new URL(urlString);
-            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setRequestMethod("POST");
-            urlConnection.setDoInput(true);
-            urlConnection.setDoOutput(true);
-            urlConnection.setRequestProperty("Content-type", "application/json");
+    protected String doInBackground(String... urls){
 
-            JSONObject respose = new JSONObject();
-            OutputStream outputStream = urlConnection.getOutputStream();
+        Log.i("Log", "Charging file.");
+        String result = "";
+        URL url;
+        HttpURLConnection httpURLConnection;
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            bufferedWriter.write(respose.toString());
+        try {
+            Log.i("Loga", urls[1]);
+            url = new URL(urls[0]);
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setRequestMethod(urls[1]);
+            InputStream inputStream = httpURLConnection.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 
-            Log.i("Loga", respose.toString());
-
-
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            outputStream.close();
+            int data = inputStreamReader.read();
+            while (data != -1){
+                char current = (char)data;
+                result += current;
+                data = inputStreamReader.read();
+            }
+            Log.i("Log", "Charging success.");
+            return result;
 
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.i("Log", "Charging error.");
 
-        return "Done";
+        return null;
+    }
+/*
+    @Override
+    protected void onPostExecute(String result) {
+        super.onPostExecute(result);
+        Log.i("Loga", result);
+
+        try {
+
+            JSONArray jsonArray = new JSONArray(result);
+            for (int i = 0; i < jsonArray.length(); i++){
+                JSONObject json = jsonArray.getJSONObject(i);
+                Log.i("Log", json.getString("data"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("Log", "Finished parsing.");
+
+    }*/
+
+    private boolean checkError(String data){
+        Log.i("Loga", data);
+
+
+        if(data == null){
+            return false;
+        }
+
+        try {
+            JSONObject json = new JSONObject(data);
+            Log.i("Loga", json.getString("success"));
+
+            if(json.getString("success") == "false"){
+                Log.i("Loga", "failed");
+                return false;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.i("Loga", "win");
+        return true;
+    }
+
+
+    public String logIn(String email, String password)  {
+        String url = "http://restaurants-tec.herokuapp.com/users/sessions/"+email+"/"+password+"/REGULAR";
+        String response = null;
+        try {
+            response = execute(url, "POST").get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        String session = null;
+
+        if(checkError(response)){
+            try {
+                JSONObject json = new JSONObject(response);
+                json = new JSONObject(json.getString("data"));
+                Log.i("Loga", json.getString("session"));
+                session = json.getString("session");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return session;
+    }
+
+    public void requestPassword(String email){
+        String url = "http://restaurants-tec.herokuapp.com/users/"+email;
+        execute(url, "GET");
+    }
+
+    public boolean createAccount(String name, String email, String password){
+        String url = "http://restaurants-tec.herokuapp.com/users/"+name+"/"+email+"/"+password;
+        String response = null;
+        try {
+            response = execute(url, "POST").get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return checkError(response);
     }
 
 
