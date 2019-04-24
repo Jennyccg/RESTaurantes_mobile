@@ -12,7 +12,7 @@ public class Details extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
-            nameT = getIntent().getStringExtra("nombre");
+        nameT = getIntent().getStringExtra("nombre");
         Toast.makeText(getApplicationContext(),nameT, Toast.LENGTH_LONG).show();
 
     }
