@@ -293,9 +293,9 @@ public class Rest_Data {
 
         String contactsString = "contacts: [";
         for(int i = 0; i < contacts.size()-1 ; ++i){
-            contactsString+= "{ name: " + contacts.get(i) + ", value:" + value.get(i) + "},";
+            contactsString+= "{ name: \"" + contacts.get(i) + "\", value:\"" + value.get(i) + "\"},";
         }
-        contactsString+= "{ name: " + contacts.get(contacts.size()-1) + ", value:" + value.get(contacts.size()-1) + "}";
+        contactsString+= "{ name: \"" + contacts.get(contacts.size()-1) + "\", value:\"" + value.get(contacts.size()-1) + "\"}";
         contactsString += "]";
 
         Log.i("REST", contactsString);

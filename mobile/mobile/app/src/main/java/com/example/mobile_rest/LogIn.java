@@ -41,8 +41,7 @@ public class LogIn extends AppCompatActivity {
         //startActivity(siguiente);
 
         ConnectAPI connectAPI = new ConnectAPI();
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        connectAPI.getAllStores(sharedPreferences.getString("session", null));
+
 
         /*
         Usar base 64 para codificar las imagenes.
@@ -53,7 +52,11 @@ public class LogIn extends AppCompatActivity {
     public void syncFacebook(View view){
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
+        restaurant.setName("Otro restaurante.");
 
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String sesion = sharedPreferences.getString("session", null);
+        connectAPI.createRestaurant(restaurant, sesion);
         String json = restaurant.getJson();
         Log.i("RESTJSON", json);
     }
