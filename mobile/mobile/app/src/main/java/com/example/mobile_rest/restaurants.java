@@ -17,7 +17,7 @@ public class restaurants extends AppCompatActivity {
 
     //ArrayList<String> sRest ;
     //ArrayList<String> tRest ;
-    Rest_Data restaU= new Rest_Data();
+    //Rest_Data restaU= new Rest_Data();
     ArrayList <Rest_Data> rest= new ArrayList<>();
 
 
