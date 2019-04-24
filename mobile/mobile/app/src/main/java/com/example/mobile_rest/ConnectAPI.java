@@ -81,7 +81,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        Log.i("Loga", result);
+        //Log.i("Loga", result);
         /*
         Log.i("Loga", result);
 
@@ -203,16 +203,23 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurant.getJson();
         String json = "{\"session\" : \""+session+"\"}";
 
+        Log.i("RESTUpload", url);
+        Log.i("RESTUpload", json);
+
+
         String response = null;
+
         try {
             response = execute(url, "POST", json).get();
+            Log.i("RESTUpload", response);
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }//checkError(response)
 
-        return checkError(response);
+        return true;
     }
 
     //Obtiene el restaurante por id
@@ -291,13 +298,14 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
         String response = null;
         try {
-            response = execute(url, "POST", json).get();
+            response = execute(url, "POST", "").get();
+            Log.i("LOGSTAR", response);
+
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         return checkError(response);
 
     }

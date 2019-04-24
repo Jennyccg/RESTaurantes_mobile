@@ -37,11 +37,8 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void createAccount(View view){
-        //Intent siguiente = new Intent(this, CreateAccount.class);
-        //startActivity(siguiente);
-
-        ConnectAPI connectAPI = new ConnectAPI();
-
+        Intent siguiente = new Intent(this, CreateAccount.class);
+        startActivity(siguiente);
 
         /*
         Usar base 64 para codificar las imagenes.
@@ -50,15 +47,19 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void syncFacebook(View view){
+
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
         restaurant.setName("Otro restaurante.");
+        String json = restaurant.getJson();
+        Log.i("RESTJSON", json);
 
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         String sesion = sharedPreferences.getString("session", null);
-        connectAPI.createRestaurant(restaurant, sesion);
-        String json = restaurant.getJson();
-        Log.i("RESTJSON", json);
+        //connectAPI.createRestaurant(restaurant, sesion);
+        connectAPI.uploadStars("5cbfae6f31fe3921c0943d98", "1", sesion);
+
+
     }
 
     public void singIn(View view){
@@ -75,8 +76,8 @@ public class LogIn extends AppCompatActivity {
             editor.commit();
 
 
-            //Intent siguiente = new Intent(this, map.class);
-            //startActivity(siguiente);
+            Intent siguiente = new Intent(this, map.class);
+            startActivity(siguiente);
         }
 
     }

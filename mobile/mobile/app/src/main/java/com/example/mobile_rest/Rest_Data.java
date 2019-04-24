@@ -293,77 +293,138 @@ public class Rest_Data {
 
         String contactsString = "contacts: [";
         for(int i = 0; i < contacts.size()-1 ; ++i){
-            contactsString+= "{ name: \"" + contacts.get(i) + "\", value:\"" + value.get(i) + "\"},";
+            contactsString+= "{ \"name\": \"" + contacts.get(i) + "\", \"value\":\"" + value.get(i) + "\"},";
         }
-        contactsString+= "{ name: \"" + contacts.get(contacts.size()-1) + "\", value:\"" + value.get(contacts.size()-1) + "\"}";
+        contactsString+= "{ \"name\": \"" + contacts.get(contacts.size()-1) + "\", \"value\":\"" + value.get(contacts.size()-1) + "\"}";
         contactsString += "]";
 
         Log.i("REST", contactsString);
 
 
-        json = "" +
-                "{\n" +
-                "        name: \""+getName()+"\",\n" +
-                "        type: \""+getType()+"\",\n" +
-                "        price: \""+getPrice()+"\",\n" +
-                "        location: {\n" +
-            "               type: \"Point\"," +
-                "            coordinates : ["+getLongitude()+","+getLatitude()+"]\n" +
+        /*json = "{\n" +
+                "        \"name\": \""+getName()+"\",\n" +
+                "        \"type\": \""+getType()+"\",\n" +
+                "        \"price\": \""+getPrice()+"\",\n" +
+                "        \"location\": {\n" +
+            "               \"type\": \"Point\"," +
+                "            \"coordinates\" : ["+getLongitude()+","+getLatitude()+"]\n" +
                 "        },\n" +
-                "        schedule: {\n" +
-                "            MONDAY: { \n" +
-            "                start: {\n" +
-                    "                    hour: "+getStarHour()+", \n" +
-                    "                    minute: "+getStarMinute()+" \n" +
+                "        \"schedule\": {\n" +
+                "            \"MONDAY\": { \n" +
+            "                \"start\": {\n" +
+                    "                    \"hour\": "+getStarHour()+", \n" +
+                    "                    \"minute\": "+getStarMinute()+" \n" +
                     "                }\n" +
-                    "                end: {\n" +
-                    "                    hour: "+getEndHour() +", \n" +
-                    "                    minute: "+getEndMinute()+" \n" +
+                    "                \"end\": {\n" +
+                    "                    \"hour\": "+getEndHour() +", \n" +
+                    "                    \"minute\": "+getEndMinute()+" \n" +
                     "                }\n" +
                     "            },\n" +
-                "            TUESDAY: { \n" +
-                "                start: {\n" +
-                "                    hour: "+getStarHour()+", \n" +
-                "                    minute: "+getStarMinute()+" \n" +
+                "            \"TUESDAY\": { \n" +
+                "                \"start\": {\n" +
+                "                    \"hour\": "+getStarHour()+", \n" +
+                "                    \"minute\": "+getStarMinute()+" \n" +
                 "                }\n" +
-                "                end: {\n" +
-                "                    hour: "+getEndHour() +", \n" +
-                "                    minute: "+getEndMinute()+" \n" +
-                "                }\n" +
-                "            },\n" +
-                "            WEDNESDAY: { \n" +
-                "                start: {\n" +
-                "                    hour: "+getStarHour()+", \n" +
-                "                    minute: "+getStarMinute()+" \n" +
-                "                }\n" +
-                "                end: {\n" +
-                "                    hour: "+getEndHour() +", \n" +
-                "                    minute: "+getEndMinute()+" \n" +
+                "                \"end\": {\n" +
+                "                    \"hour\": "+getEndHour() +", \n" +
+                "                    \"minute\": "+getEndMinute()+" \n" +
                 "                }\n" +
                 "            },\n" +
-                "            THURSDAY: { \n" +
-                "                start: {\n" +
-                "                    hour: "+getStarHour()+", \n" +
-                "                    minute: "+getStarMinute()+" \n" +
+                "            \"WEDNESDAY\": { \n" +
+                "                \"start\": {\n" +
+                "                    \"hour\": "+getStarHour()+", \n" +
+                "                    \"minute\": "+getStarMinute()+" \n" +
                 "                }\n" +
-                "                end: {\n" +
-                "                    hour: "+getEndHour() +", \n" +
-                "                    minute: "+getEndMinute()+" \n" +
+                "                \"end\": {\n" +
+                "                    \"hour\": "+getEndHour() +", \n" +
+                "                    \"minute\": "+getEndMinute()+" \n" +
                 "                }\n" +
                 "            },\n" +
-                "            FRIDAY: { \n" +
-                "                start: {\n" +
-                "                    hour: "+getStarHour()+", \n" +
-                "                    minute: "+getStarMinute()+" \n" +
+                "            \"THURSDAY\": { \n" +
+                "                \"start\": {\n" +
+                "                    \"hour\": "+getStarHour()+", \n" +
+                "                    \"minute\": "+getStarMinute()+" \n" +
                 "                }\n" +
-                "                end: {\n" +
-                "                    hour: "+getEndHour() +", \n" +
-                "                    minute: "+getEndMinute()+" \n" +
+                "                \"end\": {\n" +
+                "                    \"hour\": "+getEndHour() +", \n" +
+                "                    \"minute\": "+getEndMinute()+" \n" +
+                "                }\n" +
+                "            },\n" +
+                "            \"FRIDAY\": { \n" +
+                "                \"start\": {\n" +
+                "                    \"hour\": "+getStarHour()+", \n" +
+                "                    \"minute\": "+getStarMinute()+" \n" +
+                "                }\n" +
+                "                \"end\": {\n" +
+                "                    \"hour\": "+getEndHour() +", \n" +
+                "                    \"minute\": "+getEndMinute()+" \n" +
                 "                }\n" +
                 "            }\n" +
                 "        },\n" + contactsString +
                 "    }";
 
+*/
+        json = "{"+
+                "name:\""+getName()+"\","+
+                "type:\""+getType()+"\","+
+                "price:\""+getPrice()+"\","+
+                "location:{"+
+                "type:\"Point\","+
+                "coordinates:["+getLongitude()+","+getLatitude()+"]"+
+                "},"+
+                "schedule:{"+
+                "MONDAY:{"+
+                "start:{"+
+                "hour:"+getStarHour()+","+
+                "minute:"+getStarMinute()+""+
+                "}"+
+                "end:{"+
+                "hour:"+getEndHour()+","+
+                "minute:"+getEndMinute()+""+
+                "}"+
+                "},"+
+                "TUESDAY:{"+
+                "start:{"+
+                "hour:"+getStarHour()+","+
+                "minute:"+getStarMinute()+""+
+                "}"+
+                "end:{"+
+                "hour:"+getEndHour()+","+
+                "minute:"+getEndMinute()+""+
+                "}"+
+                "},"+
+                "WEDNESDAY:{"+
+                "start:{"+
+                "hour:"+getStarHour()+","+
+                "minute:"+getStarMinute()+""+
+                "}"+
+                "end:{"+
+                "hour:"+getEndHour()+","+
+                "minute:"+getEndMinute()+""+
+                "}"+
+                "},"+
+                "THURSDAY:{"+
+                "start:{"+
+                "hour:"+getStarHour()+","+
+                "minute:"+getStarMinute()+""+
+                "}"+
+                "end:{"+
+                "hour:"+getEndHour()+","+
+                "minute:"+getEndMinute()+""+
+                "}"+
+                "},"+
+                "FRIDAY:{"+
+                "start:{"+
+                "hour:"+getStarHour()+","+
+                "minute:"+getStarMinute()+""+
+                "}"+
+                "end:{"+
+                "hour:"+getEndHour()+","+
+                "minute:"+getEndMinute()+""+
+                "}"+
+                "}"+
+                "},"+contactsString+
+                "}";
 
         return json;
     }
