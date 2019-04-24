@@ -1,6 +1,7 @@
 package com.example.mobile_rest;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -113,5 +114,10 @@ public class RestaurantInfo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant_info);
+
+        Intent intent = getIntent();
+        String id = intent.getStringExtra("ID");
+
+
     }
 }
