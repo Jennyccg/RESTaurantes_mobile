@@ -9,13 +9,14 @@ public class Rest_Data {
     String price;
     Double latitude;
     Double longitude;
-    ArrayList schedule;
+    ArrayList <String> schedule;
     int starHour;
     int starMinute;
     int endHour;
     int endMinute;
-    ArrayList nameContact;
-    ArrayList valueContact;
+    ArrayList <String> nameContact;
+    ArrayList  <String> valueContact;
+     int score;
 
     public String getId() {
         return id;
@@ -65,11 +66,11 @@ public class Rest_Data {
         this.longitude = longitude;
     }
 
-    public ArrayList getSchedule() {
+    public ArrayList<String> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(ArrayList schedule) {
+    public void setSchedule(ArrayList<String> schedule) {
         this.schedule = schedule;
     }
 
@@ -105,20 +106,28 @@ public class Rest_Data {
         this.endMinute = endMinute;
     }
 
-    public ArrayList getNameContact() {
+    public ArrayList<String> getNameContact() {
         return nameContact;
     }
 
-    public void setNameContact(ArrayList nameContact) {
+    public void setNameContact(ArrayList<String> nameContact) {
         this.nameContact = nameContact;
     }
 
-    public ArrayList getValueContact() {
+    public ArrayList<String> getValueContact() {
         return valueContact;
     }
 
-    public void setValueContact(ArrayList valueContact) {
+    public void setValueContact(ArrayList<String> valueContact) {
         this.valueContact = valueContact;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
 

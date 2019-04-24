@@ -3,8 +3,12 @@ package com.example.mobile_rest;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -17,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,12 +33,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class map extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private Marker marcador ;
+    Double latitudA;
+    Double longitudA;
+    // Areglo de restaurantes
+    Rest_Data marcaRest= new Rest_Data();
+    ArrayList <Rest_Data> puntos= new ArrayList<>();
+
+
+
     private final static int MY_PERMISSION_FINE_LOCATION = 101;
 
-    Rest_Data marcaRest= new Rest_Data();
 
     boolean doubleClick=false;
 
@@ -70,10 +85,54 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
+    LocationListener locListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            actualizarMiUbicacion(location);
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+
+    };
+
+
+
+
+
 
 // geolocalización por el boton
     public void miUbicacion(){
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            return;
+        }
+
+        mMap.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        actualizarMiUbicacion(location);
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, locListener);
+
+    }
+
+        /* if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(getApplicationContext(), "Si hay permisos", Toast.LENGTH_LONG).show();
             mMap.setMyLocationEnabled(true);
 
@@ -83,10 +142,10 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
             }
 
-        }
+        }*/
 
 
-    }
+
 
 
     // permitir la geolocalizacion verifica permisos
@@ -150,18 +209,23 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         Toast.makeText(getApplicationContext(), "onmapredy", Toast.LENGTH_LONG).show();
         //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.builder().target));
 
+
+        // POR AQUI TIENE QUE ESTAR  LO QUE SE LLENO DESDE LA BASE DE DATOS
+
+        //PROCEDIMIENTO QUE MARCA
+        allMarkers();
         // mo
-        marcaRest.latitude=9.86034;
-        marcaRest.longitude=-83.76850;
-        marcaRest.name="Pizza";
+        //marcaRest.latitude=9.86034;
+        //marcaRest.longitude=-83.76850;
+        //marcaRest.name="Pizza";
 
-        MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
+        //MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
 
-        marcaRest.latitude=9.8998;
-        marcaRest.longitude=-83.6789;
-        marcaRest.name="vregv";
+        //marcaRest.latitude=9.8998;
+        //marcaRest.longitude=-83.6789;
+        //marcaRest.name="vregv";
 
-        MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
+        //MostarMarcador(googleMap,marcaRest.name,marcaRest.latitude,marcaRest.longitude);
 
         // Add a marker in Sydney and move the camera
         //ubicación usuario
@@ -172,6 +236,39 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
 
 
+    }
+
+    public void allMarkers(){
+        for(int k=0; k< puntos.size(); k++){
+
+            MostarMarcador(mMap,puntos.get(k).name,puntos.get(k).latitude,puntos.get(k).longitude);
+
+        }
+    }
+
+    private void agregarMarcador(double latitudA, double longituA) {
+        LatLng coordenadas = new LatLng(latitudA, longituA);
+        CameraUpdate miUbicacion;
+        miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
+        if (marcador != null) marcador.remove();
+        marcador = mMap.addMarker(new MarkerOptions()
+                .position(coordenadas)
+                .title("Mi posicion Actual"));
+                //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher)));
+        mMap.animateCamera(miUbicacion);
+
+
+    }
+
+    private void actualizarMiUbicacion(Location location) {
+        if (location != null) {
+            latitudA = location.getLatitude();
+            longitudA = location.getLongitude();
+            agregarMarcador(latitudA, longitudA);
+            Toast.makeText(getApplicationContext(),String.valueOf(latitudA)+ "_" +String.valueOf(longitudA) , Toast.LENGTH_LONG).show();
+
+
+        }
     }
 
 // Marcar puntos
@@ -238,18 +335,6 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
 
 
-//   ******************************************************
-// Se utilizará otro Evento global  onInfoWindowClick - Restaurante en el mapa
-//   ******************************************************
-
-/*     mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-         @Override
-         public void onInfoWindowClick(Marker marker) {
-             Toast.makeText(getApplicationContext()," onInforWindowClick", Toast.LENGTH_LONG).show();
-         }
-     });
-
-*/
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -268,7 +353,9 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void Goadd(View view) {
-        Intent siguiente = new Intent(this, Add.class);
+        Intent siguiente = new Intent(this, CreateRestaurant.class);
+        siguiente.putExtra("lat",latitudA);
+        siguiente.putExtra("longi",longitudA);
         startActivity(siguiente);
 
     }
