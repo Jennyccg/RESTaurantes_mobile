@@ -32,7 +32,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     @Override
     protected String doInBackground(String... urls){
 
-        Log.i("Log", "Charging file.");
+        Log.i("CONNECTION", "CONNECTING");
         String result = "";
         URL url;
         HttpURLConnection httpURLConnection;
@@ -45,13 +45,20 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             url = new URL(urls[0]);
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setRequestMethod(urls[1]);
+            httpURLConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
-            if(urls[1] != "GET") {
+            if(urls[1] == "POST") {
+                httpURLConnection.setDoOutput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
+                outputStream.write(urls[2].getBytes("UTF-8"));
+                
+                /*
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
+                Log.i("CONNECTION", urls[2]);
                 outputStreamWriter.write(urls[2]);
                 outputStreamWriter.flush();
                 outputStreamWriter.close();
+                */
                 outputStream.close();
             }
 
@@ -65,7 +72,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
                 data = inputStreamReader.read();
             }
 
-            Log.i("Log", "Charging success.");
+            Log.i("CONNECTION", "Charging success.");
             return result;
 
         } catch (MalformedURLException e) {
@@ -74,7 +81,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             e.printStackTrace();
         }
 
-        Log.i("Log", "Charging error.");
+        Log.i("CONNECTION", "Charging error.");
         return null;
     }
 
@@ -266,7 +273,9 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
     public boolean uploadComment(String restaurantId, String comment, String session){
         String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurantId+"/comments/"+comment;
-        String json = "{\"session\" : \""+session+"\"}";
+
+        String json = "{\"session\":\""+session+"\"}";
+
         Log.i("UPLOAD_COMMENT_RESPONSE", json);
         String response = null;
         try {
