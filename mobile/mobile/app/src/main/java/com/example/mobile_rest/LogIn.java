@@ -2,6 +2,7 @@ package com.example.mobile_rest;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -65,16 +66,14 @@ public class LogIn extends AppCompatActivity {
     public void singIn(View view){
         ConnectAPI connectAPI = new ConnectAPI();
         String session = connectAPI.logIn(email.getText().toString(), password.getText().toString());
-        //Boolean success = connectAPI.logIn("kevin.daniel277@gmail.com", "345");
 
         if(session == null){
             createAlertDialog("Error", "Correo o contraseñas erroneas.");
         } else {
-            SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("session", session);
             editor.commit();
-
 
             Intent siguiente = new Intent(this, map.class);
             startActivity(siguiente);

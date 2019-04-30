@@ -68,8 +68,7 @@ public class restaurants extends AppCompatActivity {
                         int idRest;
                         String nombre="bk";
                        nombre = sRest.get(posicion);
-                        nextW(nombre, posicion);
-
+                        nextW(posicion);
 
                     }
                 });
@@ -86,16 +85,14 @@ public class restaurants extends AppCompatActivity {
 
 
 
-    public void nextW(String nameR, int posicion){
+    public void nextW(int posicion){
 
         // Toast.makeText(this, posicion, Toast.LENGTH_SHORT).show();
 
         Intent siguiente = new Intent( this,RestaurantInfo.class);
 
         // envia un parametros
-        siguiente.putExtra("nombre",nameR);
-        siguiente.putExtra("posID",posicion);
-
+        siguiente.putExtra("ID", rest.get(posicion).getId());
 
 
         startActivity(siguiente);

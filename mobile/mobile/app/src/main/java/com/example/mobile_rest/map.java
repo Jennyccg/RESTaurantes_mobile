@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -64,8 +65,9 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
         //Agrega restaurantes
         ConnectAPI connectAPI = new ConnectAPI();
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        puntos = connectAPI.getAllStores(sharedPreferences.getString("session", null));
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String session = sharedPreferences.getString("session", null);
+        puntos = connectAPI.getAllStores(session);
 
 
         // Si funciona la conexión

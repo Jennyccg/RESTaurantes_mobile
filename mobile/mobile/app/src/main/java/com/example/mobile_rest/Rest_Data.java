@@ -16,7 +16,10 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
+
+import static java.util.Arrays.asList;
 
 public class Rest_Data {
     String id;
@@ -26,14 +29,14 @@ public class Rest_Data {
     String imageUrl;
     Double latitude;
     Double longitude;
-    ArrayList <String> schedule;
+    ArrayList <String>  schedule = new ArrayList<String>();
     int starHour;
     int starMinute;
     int endHour;
     int endMinute;
     ArrayList <String> nameContact = new ArrayList<String>();
     ArrayList  <String> valueContact = new ArrayList<String>();
-     int score;
+    float score;
 
 
 
@@ -107,10 +110,19 @@ public class Rest_Data {
 
             setId(json.getString("_id"));
             setName(json.getString("name"));
+            setScore(Float.parseFloat(json.getString("score")));
+
 
             JSONObject schedule = new JSONObject(json.getString("schedule"));
+            ArrayList<String> days = new ArrayList<>();
+            for(Iterator key = schedule.keys(); key.hasNext();){
+                String keyString = String.valueOf(key.next());
+                days.add(keyString);
+                Log.i("DAYS_JSON_READER", keyString);
+            }
 
-            JSONObject day = new JSONObject(schedule.getString("MONDAY"));
+            JSONObject day = (JSONObject) schedule.get(days.get(0));
+
             JSONObject start = new JSONObject(day.getString("start"));
             JSONObject end = new JSONObject(day.getString("end"));
 
@@ -119,6 +131,7 @@ public class Rest_Data {
             setStarHour(Integer.parseInt(start.getString("hour")));
             setStarMinute(Integer.parseInt(start.getString("minute")));
 
+            setSchedule(days);
 
             JSONObject location = new JSONObject(json.getString("location"));
             JSONArray coordinates = new JSONArray(location.getString("coordinates"));
@@ -428,11 +441,11 @@ public class Rest_Data {
         return json;
     }
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore (int score){
+    public void setScore (float score){
         this.score = score;
     }
 }

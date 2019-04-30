@@ -101,7 +101,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     }
 
     private boolean checkError(String data){
-        Log.i("Loga", data);
+        Log.i("ERROR_CHECK", data);
 
 
         if(data == null){
@@ -110,20 +110,29 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
         try {
             JSONObject json = new JSONObject(data);
-            Log.i("Loga", json.getString("success"));
+            Log.i("ERROR_CHECK", json.getString("success"));
 
             if(json.getString("success") == "false"){
-                Log.i("Loga", "failed");
+                Log.i("ERROR_CHECK", "failed");
                 return false;
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("Loga", "win");
+        Log.i("ERROR_CHECK", "win");
         return true;
     }
 
+    private String createJsonSession(String session){
+        JSONObject json = new JSONObject();
+        try {
+            json.put("session", session);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     public String logIn(String email, String password)  {
         String url = "http://restaurants-tec.herokuapp.com/users/sessions/"+email+"/"+password+"/REGULAR";
@@ -142,7 +151,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             try {
                 JSONObject json = new JSONObject(response);
                 json = new JSONObject(json.getString("data"));
-                Log.i("Loga", json.getString("session"));
+                Log.i("SESSION_ID", json.getString("session"));
                 session = json.getString("session");
 
             } catch (JSONException e) {
@@ -191,7 +200,6 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
                 JSONObject jsonElement = jsonArray.getJSONObject(i);
 
                 Log.i("Log", jsonElement.toString());
-                //Rest_Data a = new Rest_Data(jsonElement.toString());
                 restaurantes.add(new Rest_Data(jsonElement.toString()));
 
             }
@@ -259,9 +267,11 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     public boolean uploadComment(String restaurantId, String comment, String session){
         String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurantId+"/comments/"+comment;
         String json = "{\"session\" : \""+session+"\"}";
+        Log.i("UPLOAD_COMMENT_RESPONSE", json);
         String response = null;
         try {
             response = execute(url, "POST", json).get();
+            Log.i("UPLOAD_COMMENT_RESPONSE", response);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -274,7 +284,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     public ArrayList<String> getComments(String restaurantId){
         String url = "http://restaurants-tec.herokuapp.com/restaurants/"+ restaurantId+"/comments";
 
-        String response = null;
+        String response = "";
         ArrayList<String> comments = new ArrayList<String>();
 
         try {
@@ -290,13 +300,10 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
                 String name = json.getString("added_by");
                 String message = json.getString("text");
                 String finalMessage = name+ ": " + message;
-
                 comments.add(finalMessage);
-                Log.i("Log", finalMessage);
             }
 
             //session = json.getString("session");
-
 
         } catch (ExecutionException e) {
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package com.example.mobile_rest;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +27,10 @@ public class CreateAccount extends AppCompatActivity {
         if(session == null){
             return false;
         } else {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("session", session);
+            editor.commit();
             return true;
         }
     }
