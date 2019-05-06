@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class RestaurantInfo extends AppCompatActivity {
 
     ListView commentsListView;
-    final ArrayList<String> comments = new ArrayList<String>();
     String id;
     String userName = "Prueba";
 
@@ -32,13 +31,20 @@ public class RestaurantInfo extends AppCompatActivity {
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant(id);
 
-        String description = "Score: " + String.valueOf(restaurant.getScore());
-
-        Log.i("RESTINFO", restaurant.getName());
-        Log.i("RESTINFO", String.valueOf(restaurant.getScore()));
         setTitle(restaurant.getName());
-        setDescription(description);
-        setImage();
+
+        ArrayList<String> days = restaurant.getSchedule();
+        String schedule = "";
+        schedule = days.get(0);
+
+        /*for(int i = 1 ; i < days.size() ; ++i){
+            schedule += ", " + days.get(i);
+        }*/
+        Log.i("SCHEDULE" , schedule);
+        //setSchedule(schedule);
+
+        //updateScore(String.valueOf(restaurant.getScore()));
+        //setImage();
         setStars(0);
         updateComments();
     }
@@ -48,13 +54,18 @@ public class RestaurantInfo extends AppCompatActivity {
         titleView.setText(title);
     }
 
-    private void setDescription(String description){
-        TextView descriptionView = (TextView)findViewById(R.id.restaurantDescription);
-        descriptionView.setText(description);
+    private void setSchedule(String description){
+        TextView scheduleView = (TextView)findViewById(R.id.restaurantSchedule);
+        scheduleView.setText(description);
     }
 
     private void setImage(){
         findViewById(R.id.profileImg).setBackgroundResource(R.mipmap.ic_launcher);
+    }
+
+    private void updateScore(String score){
+        TextView scoreView = (TextView)findViewById(R.id.restaurantScore);
+        scoreView.setText(score);
     }
 
     private void setStars(int starQuantity){
@@ -82,14 +93,17 @@ public class RestaurantInfo extends AppCompatActivity {
     }
 
     private void updateComments(){
+        final ArrayList<String> comments = new ArrayList<String>();
         ConnectAPI connectAPI = new ConnectAPI();
         ArrayList<String> com = connectAPI.getComments(id);
+
         commentsListView = findViewById(R.id.comments);
 
         for(int i = 0 ; i < com.size() ; ++ i){
             comments.add(com.get(i));
         }
         //Se agregar comentarios a comments
+
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, comments);
         commentsListView.setAdapter(adapter);
@@ -106,20 +120,16 @@ public class RestaurantInfo extends AppCompatActivity {
         ConnectAPI connectAPI = new ConnectAPI();
         connectAPI.uploadComment(id, newComment, session);
 
-        //updateComments();
+        updateComments();
         return true;
     }
 
     private boolean uploadStars(int quantity){
         ConnectAPI connectAPI = new ConnectAPI();
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String session = sharedPreferences.getString("session", null);
 
         connectAPI.uploadStars(id, String.valueOf(quantity), session);
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, comments);
-        commentsListView.setAdapter(adapter);
-
         //Se suben las estrellas a la api
         return true;
     }
@@ -137,7 +147,7 @@ public class RestaurantInfo extends AppCompatActivity {
         }
 
         setStars(starQuantity);
-        //uploadStars(starQuantity);
+        uploadStars(starQuantity);
     }
 
     public void postComment(View view){

@@ -51,7 +51,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
                 httpURLConnection.setDoOutput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
                 outputStream.write(urls[2].getBytes("UTF-8"));
-                
+
                 /*
                 OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
                 Log.i("CONNECTION", urls[2]);
@@ -330,8 +330,8 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
         String response = null;
         try {
-            response = execute(url, "POST", "").get();
-            Log.i("LOGSTAR", response);
+            response = execute(url, "POST", json).get();
+            Log.i("LOG_STARS_RESPONSE", response);
 
         } catch (ExecutionException e) {
             e.printStackTrace();

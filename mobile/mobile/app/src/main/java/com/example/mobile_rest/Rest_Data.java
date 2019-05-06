@@ -118,7 +118,7 @@ public class Rest_Data {
             for(Iterator key = schedule.keys(); key.hasNext();){
                 String keyString = String.valueOf(key.next());
                 days.add(keyString);
-                Log.i("DAYS_JSON_READER", keyString);
+                //Log.i("DAYS_JSON_READER", keyString);
             }
 
             JSONObject day = (JSONObject) schedule.get(days.get(0));
@@ -131,7 +131,7 @@ public class Rest_Data {
             setStarHour(Integer.parseInt(start.getString("hour")));
             setStarMinute(Integer.parseInt(start.getString("minute")));
 
-            setSchedule(days);
+            setSchedule((ArrayList<String>) days.clone());
 
             JSONObject location = new JSONObject(json.getString("location"));
             JSONArray coordinates = new JSONArray(location.getString("coordinates"));
@@ -167,7 +167,7 @@ public class Rest_Data {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
+        /*
 
         Log.i("LOGRES", "Se hizo el restaurante.");
 
@@ -189,7 +189,7 @@ public class Rest_Data {
         }
 
         Log.i("LOGRES", String.valueOf(score));
-
+        */
     }
 
     public String getId() {
