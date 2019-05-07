@@ -198,6 +198,7 @@
                             android:layout_width="94dp"
                             android:layout_height="64dp"
                             android:text="Open at:"
+                            android:textSize="18sp"
                             android:textStyle="bold"
                             tools:layout_editor_absoluteX="28dp"
                             tools:layout_editor_absoluteY="303dp" />

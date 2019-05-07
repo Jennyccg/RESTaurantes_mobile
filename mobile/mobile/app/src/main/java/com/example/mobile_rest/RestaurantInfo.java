@@ -38,7 +38,7 @@ public class RestaurantInfo extends AppCompatActivity {
     }
 
     private void downloadAPI(){
-        //Obteins restaurant object
+        //Obtains restaurant object
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant(id);
 
