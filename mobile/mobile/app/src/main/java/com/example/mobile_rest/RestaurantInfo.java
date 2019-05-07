@@ -3,6 +3,7 @@ package com.example.mobile_rest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,31 +23,38 @@ public class RestaurantInfo extends AppCompatActivity {
 
     ListView commentsListView;
     String id;
-    String userName = "Prueba";
-
 
     //Get from API and Set on app
-    private void download(){
+    private void setInformation(){
+        downloadAPI();
+        updateComments();
+        setStars(0);
+    }
 
+    private void downloadAPI(){
+        //Obteins restaurant object
         ConnectAPI connectAPI = new ConnectAPI();
         Rest_Data restaurant = connectAPI.getRestaurant(id);
 
+        //Set variables
         setTitle(restaurant.getName());
+        setScore(String.valueOf(restaurant.getScore()));
+        setTime(restaurant.getScheduleTime());
 
         ArrayList<String> days = restaurant.getSchedule();
         String schedule = "";
         schedule = days.get(0);
-
-        /*for(int i = 1 ; i < days.size() ; ++i){
+        for(int i = 1 ; i < days.size() ; ++i){
             schedule += ", " + days.get(i);
-        }*/
-        Log.i("SCHEDULE" , schedule);
-        //setSchedule(schedule);
+        }
+        setSchedule(schedule);
 
-        //updateScore(String.valueOf(restaurant.getScore()));
+        ArrayList<Bitmap> bitmaps = restaurant.getAllBitmaps();
+        ImageView image = (ImageView) findViewById(R.id.profileImg);
+        image.setImageBitmap(bitmaps.get(0));
         //setImage();
-        setStars(0);
-        updateComments();
+
+
     }
 
     private void setTitle(String title){
@@ -63,9 +71,13 @@ public class RestaurantInfo extends AppCompatActivity {
         findViewById(R.id.profileImg).setBackgroundResource(R.mipmap.ic_launcher);
     }
 
-    private void updateScore(String score){
+    private void setScore(String score){
         TextView scoreView = (TextView)findViewById(R.id.restaurantScore);
         scoreView.setText(score);
+    }
+    private void setTime(String time){
+        TextView scoreView = (TextView)findViewById(R.id.restaurantTime);
+        scoreView.setText(time);
     }
 
     private void setStars(int starQuantity){
@@ -92,6 +104,8 @@ public class RestaurantInfo extends AppCompatActivity {
         }
     }
 
+
+    //-----Methods to connect with API (Get and Set)
     private void updateComments(){
         final ArrayList<String> comments = new ArrayList<String>();
         ConnectAPI connectAPI = new ConnectAPI();
@@ -102,16 +116,9 @@ public class RestaurantInfo extends AppCompatActivity {
         for(int i = 0 ; i < com.size() ; ++ i){
             comments.add(com.get(i));
         }
-        //Se agregar comentarios a comments
-
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, comments);
         commentsListView.setAdapter(adapter);
     }
-
-
-
-    //Set a la api
 
     private boolean uploadComment(String newComment){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -134,7 +141,9 @@ public class RestaurantInfo extends AppCompatActivity {
         return true;
     }
 
-    //Control de app
+
+    //------Control View Methods
+    //Rates th star and uploads it
     public void rateStar(View view){
         LinearLayout stars = findViewById(R.id.stars);
         boolean indicator = true;
@@ -150,6 +159,7 @@ public class RestaurantInfo extends AppCompatActivity {
         uploadStars(starQuantity);
     }
 
+    //Get comment. Calls uploadComment. Closes keyboard.
     public void postComment(View view){
         EditText comentario = (EditText)findViewById(R.id.comment);
         uploadComment(comentario.getText().toString());
@@ -159,6 +169,9 @@ public class RestaurantInfo extends AppCompatActivity {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -166,7 +179,6 @@ public class RestaurantInfo extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getStringExtra("ID");
-
-        download();
+        setInformation();
     }
 }

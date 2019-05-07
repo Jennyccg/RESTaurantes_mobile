@@ -1,19 +1,30 @@
 package com.example.mobile_rest;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-
+import android.support.v4.app.ActivityCompat;
 public class LogIn extends AppCompatActivity {
 
     TextView email;
@@ -40,28 +51,91 @@ public class LogIn extends AppCompatActivity {
     public void createAccount(View view){
         Intent siguiente = new Intent(this, CreateAccount.class);
         startActivity(siguiente);
-
-        /*
-        Usar base 64 para codificar las imagenes.
-        Base64.encode(new File ("C:*Users*Kevin PC*Documents*GitHub*RESTaura*ic_launcher.png"));
-        */
     }
+
+
+
+
+
+
+
+
+
+
 
     public void syncFacebook(View view){
-
-        ConnectAPI connectAPI = new ConnectAPI();
-        //Rest_Data restaurant = connectAPI.getRestaurant("5cbfae6f31fe3921c0943d98");
-        //restaurant.setName("Otro restaurante.");
-        //String json = restaurant.getJson();
-        //Log.i("RESTJSON", json);
-
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String sesion = sharedPreferences.getString("session", null);
-        //connectAPI.createRestaurant(restaurant, sesion);
-        //connectAPI.uploadStars("5cbfae6f31fe3921c0943d98", "1", sesion);
-        connectAPI.getAllStores(sesion);
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            //sin permiso
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 782);
+        } else {
+            //con permiso
+            cargarImagen();
+        }
 
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions , int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 782) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Dieron permiso
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    cargarImagen();
+                }
+            }
+        }
+    }
+
+    public void cargarImagen(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        startActivityForResult(intent,123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case 123:
+                    Uri imageUri = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+
+                    cursor.close();
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                    ImageView imageView = (ImageView) findViewById(R.id.userImage);
+                    imageView.setImageBitmap(bitmap);
+
+                    ConnectAPI connectAPI = new ConnectAPI();
+                    connectAPI.uploadPhoto("", bitmap);
+                    break;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void singIn(View view){
         ConnectAPI connectAPI = new ConnectAPI();

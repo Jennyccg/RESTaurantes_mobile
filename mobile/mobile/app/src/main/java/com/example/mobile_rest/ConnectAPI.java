@@ -1,6 +1,8 @@
 package com.example.mobile_rest;
 
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
@@ -13,6 +15,8 @@ import org.w3c.dom.Document;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -342,24 +346,40 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
     }
 
-    /*
-    public void uploadPhoto(String session){
-        Base64 image;
-        Base64.getUrlEncoder().encodeToString(bytes);
 
-        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+"id"+"/images/"+"Base64";
-        String json = "{\"session\" : \""+session+"\"}";
+
+    public void uploadPhoto(String session, Bitmap bitmap){
+
+        session = "5cbf7725a6db3500047d2e66";
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
+        byte[] bytesArray = byteArrayOutputStream.toByteArray();
+
+        String imageEncoded = Base64.encodeToString(bytesArray, Base64.NO_WRAP | Base64.DEFAULT);
+        JSONObject imageJson = new JSONObject();
+        try {
+            imageJson.put("session", session);
+            imageJson.put("image", imageEncoded);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+"5cc798d15ffd132ba8ef017d"+"/images";
+        String json = "";
+        json = imageJson.toString();
+        Log.i("IMAGE_REQUEST_RESPONSE", json);
+        Log.i("IMAGE_REQUEST_RESPONSE", imageEncoded);
 
         String response = null;
         try {
             response = execute(url, "POST", json).get();
+            Log.i("IMAGE_REQUEST_RESPONSE", response);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        //Base64.getUrlEncoder().encodeToString(bytes);
     }
-    */
+
 }

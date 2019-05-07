@@ -26,102 +26,46 @@ public class Rest_Data {
     String name;
     String type;
     String price;
-    String imageUrl;
     Double latitude;
     Double longitude;
-    ArrayList <String>  schedule = new ArrayList<String>();
+    float score;
     int starHour;
     int starMinute;
     int endHour;
     int endMinute;
-    ArrayList <String> nameContact = new ArrayList<String>();
-    ArrayList  <String> valueContact = new ArrayList<String>();
-    float score;
+    ArrayList <String>  schedule = new ArrayList<>();
+    ArrayList <String> nameContact = new ArrayList<>();
+    ArrayList  <String> valueContact = new ArrayList<>();
+    ArrayList <String> imageUrl = new ArrayList<>();
 
 
-
-    public class DownloadTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-
-            String result = "";
-
-            try {
-                Document document = Jsoup.connect(urls[0]).get();
-                result = document.toString();
-                return result;
-            }
-            catch (Exception e){
-                e.printStackTrace();
-                return "Error";
-            }
-
-
-        }
-    }
-    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected Bitmap doInBackground(String... urls) {
-            Bitmap bitmap = null;
-
-            try {
-
-                InputStream inputStream = new java.net.URL(urls[0]).openStream();
-                bitmap = BitmapFactory.decodeStream(inputStream);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return bitmap;
-        }
-    }
-
-    private Bitmap getImage(){
-        String url = imageUrl;
-
-        DownloadTask downloadTask = new DownloadTask();
-        DownloadImageTask downloadImageTask = new DownloadImageTask();
-        Bitmap bitmap = null;
-        try {
-            String data = downloadTask.execute(url).get();
-            bitmap = downloadImageTask.execute(data).get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        return bitmap;
-    }
 
     public Rest_Data(){
 
     }
 
+    //Creates object by copying information from json
     public Rest_Data(String data){
-
         JSONObject json = null;
 
         try {
             json = new JSONObject(data);
 
+            //Set id, name, score
             setId(json.getString("_id"));
             setName(json.getString("name"));
             setScore(Float.parseFloat(json.getString("score")));
 
 
-            JSONObject schedule = new JSONObject(json.getString("schedule"));
+            //Set days of schedule
+            JSONObject scheduleJson = new JSONObject(json.getString("schedule"));
             ArrayList<String> days = new ArrayList<>();
-            for(Iterator key = schedule.keys(); key.hasNext();){
+            for(Iterator key = scheduleJson.keys(); key.hasNext();){
                 String keyString = String.valueOf(key.next());
                 days.add(keyString);
-                //Log.i("DAYS_JSON_READER", keyString);
             }
-
-            JSONObject day = (JSONObject) schedule.get(days.get(0));
+            setSchedule(days);
+            JSONObject day = (JSONObject) scheduleJson.get(days.get(0));
 
             JSONObject start = new JSONObject(day.getString("start"));
             JSONObject end = new JSONObject(day.getString("end"));
@@ -131,20 +75,20 @@ public class Rest_Data {
             setStarHour(Integer.parseInt(start.getString("hour")));
             setStarMinute(Integer.parseInt(start.getString("minute")));
 
-            setSchedule((ArrayList<String>) days.clone());
 
+            //Set location, latitud, longitud
             JSONObject location = new JSONObject(json.getString("location"));
             JSONArray coordinates = new JSONArray(location.getString("coordinates"));
             setLatitude(coordinates.getDouble(1));
             setLongitude(coordinates.getDouble(0));
 
 
+            //Set price, type
             setPrice(json.getString("price"));
             setType(json.getString("type"));
 
-            setValueContact(null);
-            setNameContact(null);
 
+            //Set contacts
             JSONArray contacts = new JSONArray(json.getString("contacts"));
             ArrayList <String> nameContact = new ArrayList<String>();
             ArrayList  <String> valueContact = new ArrayList<String>();
@@ -156,21 +100,24 @@ public class Rest_Data {
             setNameContact(nameContact);
             setValueContact(valueContact);
 
-            setSchedule(null);
 
-            /*
-            JSONArray jsonArrayA = new JSONArray("images");
-            JSONObject image = jsonArrayA.getJSONObject(0);
-            this.imageUrl = image.toString();
-            */
+            //Set image
+
+            JSONArray imageArray = new JSONArray(json.getString("images"));
+            for(int i = 0; i < imageArray.length(); ++i) {
+                this.imageUrl.add(imageArray.getString(i));
+            }
+
+
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*
 
-        Log.i("LOGRES", "Se hizo el restaurante.");
+    }
 
+
+    public void printObject(){
         Log.i("LOGRES", getId());
         Log.i("LOGRES", getName());
         Log.i("LOGRES", getType());
@@ -189,111 +136,65 @@ public class Rest_Data {
         }
 
         Log.i("LOGRES", String.valueOf(score));
-        */
     }
 
-    public String getId() {
-        return id;
+    public class DownloadTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+
+            String result = "";
+
+            try {
+                Document document = Jsoup.connect(urls[0]).ignoreContentType(true).get();
+                result = document.toString();
+                return result;
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                return "Error";
+            }
+        }
+    }
+    public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            Bitmap bitmap = null;
+
+            try {
+                InputStream inputStream = new java.net.URL(urls[0]).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+
+            } catch (MalformedURLException e) {
+
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return bitmap;
+        }
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public ArrayList<Bitmap> getAllBitmaps(){
+        String url = "";
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+        for(int i = 0; i < imageUrl.size(); ++i) {
+            url = imageUrl.get(i);
+            DownloadTask downloadTask = new DownloadTask();
+            DownloadImageTask downloadImageTask = new DownloadImageTask();
+            Bitmap bitmap = null;
+            try {
+                //String data = downloadTask.execute(url).get();
+                bitmap = downloadImageTask.execute(url).get();
+                bitmaps.add(bitmap);
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public ArrayList<String> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ArrayList<String> schedule) {
-        this.schedule = schedule;
-    }
-
-    public int getStarHour() {
-        return starHour;
-    }
-
-    public void setStarHour(int starHour) {
-        this.starHour = starHour;
-    }
-
-    public int getStarMinute() {
-        return starMinute;
-    }
-
-    public void setStarMinute(int starMinute) {
-        this.starMinute = starMinute;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(int endHour) {
-        this.endHour = endHour;
-    }
-
-    public int getEndMinute() {
-        return endMinute;
-    }
-
-    public void setEndMinute(int endMinute) {
-        this.endMinute = endMinute;
-    }
-
-    public ArrayList<String> getNameContact() {
-        return nameContact;
-    }
-
-    public void setNameContact(ArrayList<String> nameContact) {
-        this.nameContact = nameContact;
-    }
-
-    public ArrayList<String> getValueContact() {
-        return valueContact;
-    }
-
-    public void setValueContact(ArrayList<String> valueContact) {
-        this.valueContact = valueContact;
+        return bitmaps;
     }
 
     public String getJson() {
@@ -312,70 +213,6 @@ public class Rest_Data {
 
         Log.i("REST", contactsString);
 
-
-        /*json = "{\n" +
-                "        \"name\": \""+getName()+"\",\n" +
-                "        \"type\": \""+getType()+"\",\n" +
-                "        \"price\": \""+getPrice()+"\",\n" +
-                "        \"location\": {\n" +
-            "               \"type\": \"Point\"," +
-                "            \"coordinates\" : ["+getLongitude()+","+getLatitude()+"]\n" +
-                "        },\n" +
-                "        \"schedule\": {\n" +
-                "            \"MONDAY\": { \n" +
-            "                \"start\": {\n" +
-                    "                    \"hour\": "+getStarHour()+", \n" +
-                    "                    \"minute\": "+getStarMinute()+" \n" +
-                    "                }\n" +
-                    "                \"end\": {\n" +
-                    "                    \"hour\": "+getEndHour() +", \n" +
-                    "                    \"minute\": "+getEndMinute()+" \n" +
-                    "                }\n" +
-                    "            },\n" +
-                "            \"TUESDAY\": { \n" +
-                "                \"start\": {\n" +
-                "                    \"hour\": "+getStarHour()+", \n" +
-                "                    \"minute\": "+getStarMinute()+" \n" +
-                "                }\n" +
-                "                \"end\": {\n" +
-                "                    \"hour\": "+getEndHour() +", \n" +
-                "                    \"minute\": "+getEndMinute()+" \n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"WEDNESDAY\": { \n" +
-                "                \"start\": {\n" +
-                "                    \"hour\": "+getStarHour()+", \n" +
-                "                    \"minute\": "+getStarMinute()+" \n" +
-                "                }\n" +
-                "                \"end\": {\n" +
-                "                    \"hour\": "+getEndHour() +", \n" +
-                "                    \"minute\": "+getEndMinute()+" \n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"THURSDAY\": { \n" +
-                "                \"start\": {\n" +
-                "                    \"hour\": "+getStarHour()+", \n" +
-                "                    \"minute\": "+getStarMinute()+" \n" +
-                "                }\n" +
-                "                \"end\": {\n" +
-                "                    \"hour\": "+getEndHour() +", \n" +
-                "                    \"minute\": "+getEndMinute()+" \n" +
-                "                }\n" +
-                "            },\n" +
-                "            \"FRIDAY\": { \n" +
-                "                \"start\": {\n" +
-                "                    \"hour\": "+getStarHour()+", \n" +
-                "                    \"minute\": "+getStarMinute()+" \n" +
-                "                }\n" +
-                "                \"end\": {\n" +
-                "                    \"hour\": "+getEndHour() +", \n" +
-                "                    \"minute\": "+getEndMinute()+" \n" +
-                "                }\n" +
-                "            }\n" +
-                "        },\n" + contactsString +
-                "    }";
-
-*/
         json = "{"+
                 "name:\""+getName()+"\","+
                 "type:\""+getType()+"\","+
@@ -441,12 +278,151 @@ public class Rest_Data {
         return json;
     }
 
+    public String getScheduleTime(){
+        String scheduleTime = "";
+
+        String hour = "";
+        String minute = "";
+        if(starHour < 10){
+            hour = "0"+starHour;
+        } else hour = String.valueOf(starHour);
+
+        if(starMinute < 10){
+            minute = "0"+starMinute;
+        } else minute = String.valueOf(starMinute);
+
+        scheduleTime = hour+":"+minute;
+
+        if(endHour < 10){
+            hour = "0"+endHour;
+        } else hour = String.valueOf(endHour);
+        if(endMinute < 10){
+            minute = "0"+endMinute;
+        } else minute = String.valueOf(endMinute);
+        scheduleTime+= " - " + hour+":"+minute;
+
+        return scheduleTime;
+    }
+
+    //------ Getters and Setters
+    //Score
     public float getScore() {
         return score;
     }
-
     public void setScore (float score){
         this.score = score;
+    }
+
+    //ID
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    //Name
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    //Type
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    //Price
+    public String getPrice() {
+        return price;
+    }
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    //Latitud
+    public Double getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    //Longitud
+    public Double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    //Schedule
+    public ArrayList<String> getSchedule() {
+        return schedule;
+    }
+    public void setSchedule(ArrayList<String> schedule) {
+        this.schedule = new ArrayList<>(schedule);
+    }
+
+    //Start hour
+    public int getStarHour() {
+        return starHour;
+    }
+    public void setStarHour(int starHour) {
+        this.starHour = starHour;
+    }
+
+    //Start Minute
+    public int getStarMinute() {
+        return starMinute;
+    }
+    public void setStarMinute(int starMinute) {
+        this.starMinute = starMinute;
+    }
+
+    //End Hour
+    public int getEndHour() {
+        return endHour;
+    }
+    public void setEndHour(int endHour) {
+        this.endHour = endHour;
+    }
+
+    //End Minute
+    public int getEndMinute() {
+        return endMinute;
+    }
+    public void setEndMinute(int endMinute) {
+        this.endMinute = endMinute;
+    }
+
+    //Name Contact
+    public ArrayList<String> getNameContact() {
+        return nameContact;
+    }
+    public void setNameContact(ArrayList<String> nameContact) {
+        this.nameContact = nameContact;
+    }
+
+    //Value contact
+    public ArrayList<String> getValueContact() {
+        return valueContact;
+    }
+    public void setValueContact(ArrayList<String> valueContact) {
+        this.valueContact = valueContact;
+    }
+
+    //Image
+    public ArrayList<String> getImageUrl() {
+        return imageUrl;
+    }
+    public void setImageUrl(ArrayList<String> imageUrl) {
+        this.imageUrl = new ArrayList<>(imageUrl);
     }
 }
 

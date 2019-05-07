@@ -8,7 +8,7 @@
 
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/background"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@android:color/transparent"
@@ -21,13 +21,14 @@
     <ImageView
         android:id="@+id/profileImg"
         android:layout_width="0dp"
-        android:layout_height="123dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="33dp"
-        android:layout_marginEnd="27dp"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="32dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/stars"
-        app:layout_constraintEnd_toStartOf="@+id/stars"
+        app:layout_constraintBottom_toBottomOf="@+id/stars"
+        app:layout_constraintEnd_toStartOf="@+id/restaurantTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@drawable/ic_launcher_background" />
@@ -36,11 +37,12 @@
         android:id="@+id/stars"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="54dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="22dp"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/InformationLayout"
         app:layout_constraintStart_toEndOf="@+id/profileImg"
-        app:layout_constraintTop_toBottomOf="@+id/profileImg">
+        app:layout_constraintTop_toBottomOf="@+id/restaurantTitle">
 
         <ImageView
             android:id="@+id/firstStar"
@@ -96,12 +98,13 @@
         android:id="@+id/restaurantTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
         android:layout_marginTop="41dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="38dp"
         android:text="Nombre del restaurante"
         android:textSize="30sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/stars"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/profileImg"
         app:layout_constraintTop_toTopOf="parent" />
@@ -115,21 +118,22 @@
         android:text="Comentarios"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/comments"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InformationLayout" />
 
     <ListView
         android:id="@+id/comments"
         android:layout_width="0dp"
-        android:layout_height="255dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="44dp"
         android:background="@color/common_google_signin_btn_text_dark_disabled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tituloComentarios" />
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/commentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -159,55 +163,88 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ScoreLayout"
+        android:id="@+id/InformationLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:orientation="horizontal"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/tituloComentarios"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stars">
 
-        <TextView
-            android:id="@+id/scoreTitle"
-            android:layout_width="67dp"
-            android:layout_height="26dp"
-            android:text="Score"
-            tools:layout_editor_absoluteX="28dp"
-            tools:layout_editor_absoluteY="210dp" />
+        <LinearLayout
+            android:id="@+id/ScoreLayout"
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="334dp">
 
-        <TextView
-            android:id="@+id/restaurantScore"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/scoreTitle"
+                android:layout_width="67dp"
+                android:layout_height="26dp"
+                android:text="Score"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="210dp" />
+
+            <TextView
+                android:id="@+id/restaurantScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ScheduleLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
-    </LinearLayout>
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="273dp">
 
-    <LinearLayout
-        android:id="@+id/ScheduleLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/tituloComentarios"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+            <TextView
+                android:id="@+id/scheduleTitle"
+                android:layout_width="94dp"
+                android:layout_height="64dp"
+                android:text="Schedule"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="303dp" />
 
-        <TextView
-            android:id="@+id/scheduleTitle"
-            android:layout_width="94dp"
-            android:layout_height="64dp"
-            android:text="Schedule"
-            tools:layout_editor_absoluteX="28dp"
-            tools:layout_editor_absoluteY="303dp" />
+            <TextView
+                android:id="@+id/restaurantSchedule"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/restaurantSchedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="TextView" />
+        <LinearLayout
+            android:id="@+id/timeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="337dp">
+
+            <TextView
+                android:id="@+id/TimeTitle"
+                android:layout_width="94dp"
+                android:layout_height="64dp"
+                android:text="Open at:"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="303dp" />
+
+            <TextView
+                android:id="@+id/restaurantTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+        </LinearLayout>
     </LinearLayout>
 
 
