@@ -2,6 +2,7 @@ package com.example.mobile_rest;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -184,9 +185,17 @@ public class Rest_Data {
             DownloadImageTask downloadImageTask = new DownloadImageTask();
             Bitmap bitmap = null;
             try {
-                //String data = downloadTask.execute(url).get();
                 bitmap = downloadImageTask.execute(url).get();
+
+                int width = bitmap.getWidth();
+                int height = bitmap.getHeight();
+                if(width > 1080 || height > 720){
+                    width = (int) (0.4 * width);
+                    height = (int) (0.4 * height);
+                    bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+                }
                 bitmaps.add(bitmap);
+
             } catch (ExecutionException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {

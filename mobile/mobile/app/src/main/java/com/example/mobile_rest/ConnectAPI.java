@@ -135,15 +135,6 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         return true;
     }
 
-    private String createJsonSession(String session){
-        JSONObject json = new JSONObject();
-        try {
-            json.put("session", session);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
 
     public String logIn(String email, String password)  {
         String url = "http://restaurants-tec.herokuapp.com/users/sessions/"+email+"/"+password+"/REGULAR";

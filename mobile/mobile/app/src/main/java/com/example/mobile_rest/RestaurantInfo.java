@@ -4,24 +4,30 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.GradientDrawable;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.Space;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class RestaurantInfo extends AppCompatActivity {
 
-    ListView commentsListView;
     String id;
 
     //Get from API and Set on app
@@ -49,11 +55,7 @@ public class RestaurantInfo extends AppCompatActivity {
         }
         setSchedule(schedule);
 
-        ArrayList<Bitmap> bitmaps = restaurant.getAllBitmaps();
-        ImageView image = (ImageView) findViewById(R.id.profileImg);
-        image.setImageBitmap(bitmaps.get(0));
-        //setImage();
-
+        setImage(restaurant.getAllBitmaps());
 
     }
 
@@ -67,8 +69,15 @@ public class RestaurantInfo extends AppCompatActivity {
         scheduleView.setText(description);
     }
 
-    private void setImage(){
-        findViewById(R.id.profileImg).setBackgroundResource(R.mipmap.ic_launcher);
+    private void setImage(ArrayList<Bitmap> bitmaps){
+
+        for (int i = 0 ; i < bitmaps.size() ; ++i){
+            ImageView image = new ImageView(this);
+            image.setImageBitmap(bitmaps.get(i));
+            LinearLayout layout = findViewById(R.id.imagesLayout);
+            layout.addView(image);
+        }
+
     }
 
     private void setScore(String score){
@@ -110,14 +119,26 @@ public class RestaurantInfo extends AppCompatActivity {
         final ArrayList<String> comments = new ArrayList<String>();
         ConnectAPI connectAPI = new ConnectAPI();
         ArrayList<String> com = connectAPI.getComments(id);
+        LinearLayout layout = findViewById(R.id.commentLayout);
+        layout.removeAllViewsInLayout();
+        for (int i = 0 ; i < com.size() ; ++i){
+            TextView textView = new TextView(this);
+            textView.setText(com.get(i));
+            GradientDrawable gradientDrawable = new GradientDrawable();
+            gradientDrawable.setColor(0x5FFFFFFF);
 
-        commentsListView = findViewById(R.id.comments);
+            gradientDrawable.setStroke(1, 0xFF000000);
+            textView.setBackground(gradientDrawable);
+            textView.setHeight(200);
 
+            layout.addView(textView);
+        }
+/*
         for(int i = 0 ; i < com.size() ; ++ i){
             comments.add(com.get(i));
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, comments);
-        commentsListView.setAdapter(adapter);
+        commentsListView.setAdapter(adapter);*/
     }
 
     private boolean uploadComment(String newComment){
@@ -180,5 +201,6 @@ public class RestaurantInfo extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getStringExtra("ID");
         setInformation();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 }
