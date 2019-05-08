@@ -44,7 +44,7 @@ public class buscarRest extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buscar_rest);
-
+        /*
         precio = (Spinner)findViewById(R.id.price);
         comboTCi = (Spinner)findViewById(R.id.combo_tc);
         //precioi = (EditText)findViewById(R.id.pc_dat);
@@ -175,6 +175,7 @@ public class buscarRest extends AppCompatActivity {
 
         //  aqui va el codigo de la función para obtener restaurantes de la base de datos
 
-        return  Restaurantes;
+        return  Restaurantes;*/
     }
+
 }

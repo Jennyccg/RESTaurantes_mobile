@@ -43,15 +43,6 @@ public class restaurants extends AppCompatActivity {
 
 
 
-
-
-        //lvRest.setAdapter((ListAdapter) adaptadorRestaurante);
-
-        //sRest.add("Judalu");
-        //sRest.add("Burger King");
-
-        //sRest.add("Pizza Hut");
-        //Toast.makeText(getApplicationContext(),String.valueOf(sRest.size()), Toast.LENGTH_LONG).show();
         for ( int j =0 ; j< rest.size(); j++){
             sRest.add(rest.get(j).name);
         }

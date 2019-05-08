@@ -20,16 +20,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CreateRestaurant"></activity>
+        <activity android:name=".Search_Rest"></activity>
+        <activity android:name=".CreateRestaurant" />
         <activity android:name=".RestaurantInfo" />
         <activity android:name=".CreateAccount" />
         <activity android:name=".LogIn" />
-        <activity android:name=".buscarRest"/>
-        <activity android:name=".Details"></activity>
+        <activity android:name=".buscarRest" />
+        <activity android:name=".Details" />
         <activity android:name=".restaurants" />
-        <activity android:name=".Add" />
         <activity android:name=".Search" />
-
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -52,10 +51,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
-
     </application>
 
 </manifest>

@@ -72,7 +72,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     }
 
 
-    //Boton de success
+    //Boton de success ARREGLAR
     public void createRestaurant(View view){
 
         restaurant.name= name.getText().toString();
@@ -231,7 +231,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         newLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Funciono", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Guardando Localización", Toast.LENGTH_LONG).show();
             }
         });
 

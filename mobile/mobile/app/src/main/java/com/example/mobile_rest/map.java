@@ -355,7 +355,9 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
     // Evento: Gomap
     public void GoSearch(View view) {
-        Intent siguiente = new Intent(this, buscarRest.class);
+        Intent siguiente = new Intent(this, Search_Rest.class);
+        siguiente.putExtra("lat",latitudA);
+        siguiente.putExtra("longi",longitudA);
         startActivity(siguiente);
 
     }
