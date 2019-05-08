@@ -142,12 +142,12 @@ public class buscarRest extends AppCompatActivity {
         // ****************************************************************
         //                  AQUI VA LA FUNCION QUE HACE LOS GETS PARA OBTENER LOS RESTAURANTES
         //
+        Rest_Encontrados = buscar_restaurants(tc_par, pre_par, ubicacion_par, nombre_par, can_estr_par);
 
-      //            Rest_Encontrados = buscar_restaurants(tc_par, pre_par, ubicacion_par, nombre_par, can_estr_par);
+        //Rest_Encontrados.add("SubWay");
+        //Rest_Encontrados.add("McDonald");
+        //Rest_Encontrados.add("Burger King");
 
-        Rest_Encontrados.add("SubWay");
-        Rest_Encontrados.add("McDonald");
-        Rest_Encontrados.add("Burger King");
 
 
 
@@ -159,9 +159,19 @@ public class buscarRest extends AppCompatActivity {
     // Esta funcion debe implementarse
 
 
-    private ArrayList<String> buscar_restaurants(String tcpar, double prepar, int ubicacionpar, String nombrepar, int  canestpar){
+    private ArrayList<String> buscar_restaurants(String tcpar, String prepar, int ubicacionpar, String nombrepar, int  canestpar){
 
         ArrayList<String> Restaurantes = new ArrayList<>();
+        for (int p=0 ; p< puntos.size(); p++){
+
+            if ((puntos.get(p).type).equals(tcpar )&& (puntos.get(p).price==prepar) ){
+                Restaurantes.add(puntos.get(p).name);
+            }
+
+
+
+            //Rest_Encontrados.add();
+        }
 
         //  aqui va el codigo de la función para obtener restaurantes de la base de datos
 
