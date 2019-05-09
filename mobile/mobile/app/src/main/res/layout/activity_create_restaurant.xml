@@ -334,6 +334,14 @@
                             tools:layout_editor_absoluteY="382dp" />
 
                         <CheckBox
+                            android:id="@+id/Sabado"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sabado"
+                            tools:layout_editor_absoluteX="307dp"
+                            tools:layout_editor_absoluteY="418dp" />
+
+                        <CheckBox
                             android:id="@+id/Domingo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -341,46 +349,11 @@
                             tools:layout_editor_absoluteX="307dp"
                             tools:layout_editor_absoluteY="458dp" />
 
-                        <CheckBox
-                            android:id="@+id/Sabado"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sabado"
-                            tools:layout_editor_absoluteX="307dp"
-                            tools:layout_editor_absoluteY="418dp" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/startLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/finalHourText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Hora final"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:layout_editor_absoluteX="182dp"
-                        tools:layout_editor_absoluteY="592dp" />
-
-                    <EditText
-                        android:id="@+id/HoraFin"
-                        android:layout_width="97dp"
-                        android:layout_height="46dp"
-                        android:ems="10"
-                        android:hint="Name"
-                        android:inputType="textPersonName"
-                        tools:layout_editor_absoluteX="166dp"
-                        tools:layout_editor_absoluteY="629dp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/endLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -405,6 +378,34 @@
                         android:inputType="textPersonName"
                         tools:layout_editor_absoluteX="11dp"
                         tools:layout_editor_absoluteY="620dp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/endLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/finalHourText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hora final"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="182dp"
+                        tools:layout_editor_absoluteY="592dp" />
+
+                    <EditText
+                        android:id="@+id/HoraFin"
+                        android:layout_width="97dp"
+                        android:layout_height="46dp"
+                        android:ems="10"
+                        android:hint="Name"
+                        android:inputType="textPersonName"
+                        tools:layout_editor_absoluteX="166dp"
+                        tools:layout_editor_absoluteY="629dp" />
 
                 </LinearLayout>
 

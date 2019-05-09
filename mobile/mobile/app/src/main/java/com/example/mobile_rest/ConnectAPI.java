@@ -226,7 +226,6 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         Log.i("RESTUpload", json);
 
         String response = null;
-
         try {
             response = execute(url, "POST", json).get();
             Log.i("RESTUpload", response);
@@ -338,6 +337,11 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     }
 
 
+    public void uploadPhotos(String session, ArrayList<Bitmap> bitmaps){
+        for(int i = 0 ; i < bitmaps.size() ; ++i){
+            uploadPhoto(session, bitmaps.get(i));
+        }
+    }
 
     public void uploadPhoto(String session, Bitmap bitmap){
 

@@ -42,7 +42,7 @@ public class Rest_Data {
 
 
     public Rest_Data(){
-
+        this.id = "0";
     }
 
     //Creates object by copying information from json
@@ -119,24 +119,26 @@ public class Rest_Data {
 
 
     public void printObject(){
-        Log.i("LOGRES", getId());
-        Log.i("LOGRES", getName());
-        Log.i("LOGRES", getType());
-        Log.i("LOGRES", getPrice());
-        //Log.i("LOGRES", imageUrl);
-        Log.i("LOGRES", String.valueOf(longitude));
-        Log.i("LOGRES", String.valueOf(latitude));
-        Log.i("LOGRES", String.valueOf(starHour));
-        Log.i("LOGRES", String.valueOf(starMinute));
-        Log.i("LOGRES", String.valueOf(endHour));
-        Log.i("LOGRES", String.valueOf(endMinute));
+        Log.i("LOGRES_ID", getId());
+        Log.i("LOGRES_NAME", getName());
+        Log.i("LOGRES_SCORE", String.valueOf(score));
+        Log.i("LOGRES_TYPE", getType());
+        Log.i("LOGRES_PRICE", getPrice());
+        Log.i("LOGRES_LONGITUDE", String.valueOf(longitude));
+        Log.i("LOGRES_LATITUD", String.valueOf(latitude));
+        Log.i("LOGRES_STARTHOUR", String.valueOf(starHour));
+        Log.i("LOGRES_STARTMINUTE", String.valueOf(starMinute));
+        Log.i("LOGRES_ENDHOUR", String.valueOf(endHour));
+        Log.i("LOGRES_ENDMINUTE", String.valueOf(endMinute));
 
         for(int  i = 0; i < nameContact.size() ; ++i){
-            Log.i("LOGRES", nameContact.get(i));
-            Log.i("LOGRES", valueContact.get(i));
+            Log.i("LOGRES_NAMECONTACT", nameContact.get(i));
+            Log.i("LOGRES_VALUECONTACT", valueContact.get(i));
         }
 
-        Log.i("LOGRES", String.valueOf(score));
+        for(int  i = 0; i < schedule.size() ; ++i){
+            Log.i("LOGRES_SCHEDULE", schedule.get(i));
+        }
     }
 
     public class DownloadTask extends AsyncTask<String, Void, String> {
@@ -208,83 +210,63 @@ public class Rest_Data {
 
     public String getJson() {
 
-        String json = "";
+        String jsonString = "";
 
-        ArrayList<String> contacts = getNameContact();
-        ArrayList<String> value = getValueContact();
+        JSONObject json = new JSONObject();
 
-        String contactsString = "contacts: [";
-        for(int i = 0; i < contacts.size()-1 ; ++i){
-            contactsString+= "{ \"name\": \"" + contacts.get(i) + "\", \"value\":\"" + value.get(i) + "\"},";
+        try {
+            json.put("name", getName());
+            json.put("type", getType());
+            json.put("price", getPrice());
+
+            JSONObject temporalJson = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+
+            temporalJson.put("type", "Point");
+
+            jsonArray.put(getLatitude());
+            jsonArray.put(getLatitude());
+            temporalJson.put("coordinates", jsonArray); //TODO
+            json.put("location", temporalJson);
+
+            temporalJson = new JSONObject();
+            for(int i = 0; i < getSchedule().size() ; ++i){
+                JSONObject dayJson = new JSONObject();
+
+                JSONObject timeJson = new JSONObject();
+                timeJson.put("hour", starHour);
+                timeJson.put("minute", starMinute);
+
+                dayJson.put("start", timeJson);
+
+                timeJson = new JSONObject();
+                timeJson.put("hour", endHour);
+                timeJson.put("minute", endMinute);
+
+                dayJson.put("end", timeJson);
+
+                temporalJson.put(getSchedule().get(i), dayJson);
+            }
+
+            json.put("schedule", temporalJson);
+
+            jsonArray = new JSONArray();
+            for (int i = 0 ;  i < getNameContact().size() ; ++i){
+                temporalJson = new JSONObject();
+                temporalJson.put("name", getNameContact().get(i));
+                temporalJson.put("value", getValueContact().get(i));
+                jsonArray.put(temporalJson);
+            }
+
+            json.put("contacts", jsonArray);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        contactsString+= "{ \"name\": \"" + contacts.get(contacts.size()-1) + "\", \"value\":\"" + value.get(contacts.size()-1) + "\"}";
-        contactsString += "]";
 
-        Log.i("REST", contactsString);
-
-        json = "{"+
-                "name:\""+getName()+"\","+
-                "type:\""+getType()+"\","+
-                "price:\""+getPrice()+"\","+
-                "location:{"+
-                "type:\"Point\","+
-                "coordinates:["+getLongitude()+","+getLatitude()+"]"+
-                "},"+
-                "schedule:{"+
-                "MONDAY:{"+
-                "start:{"+
-                "hour:"+getStarHour()+","+
-                "minute:"+getStarMinute()+""+
-                "},"+
-                "end:{"+
-                "hour:"+getEndHour()+","+
-                "minute:"+getEndMinute()+""+
-                "}"+
-                "},"+
-                "TUESDAY:{"+
-                "start:{"+
-                "hour:"+getStarHour()+","+
-                "minute:"+getStarMinute()+""+
-                "},"+
-                "end:{"+
-                "hour:"+getEndHour()+","+
-                "minute:"+getEndMinute()+""+
-                "}"+
-                "},"+
-                "WEDNESDAY:{"+
-                "start:{"+
-                "hour:"+getStarHour()+","+
-                "minute:"+getStarMinute()+""+
-                "},"+
-                "end:{"+
-                "hour:"+getEndHour()+","+
-                "minute:"+getEndMinute()+""+
-                "}"+
-                "},"+
-                "THURSDAY:{"+
-                "start:{"+
-                "hour:"+getStarHour()+","+
-                "minute:"+getStarMinute()+""+
-                "},"+
-                "end:{"+
-                "hour:"+getEndHour()+","+
-                "minute:"+getEndMinute()+""+
-                "}"+
-                "},"+
-                "FRIDAY:{"+
-                "start:{"+
-                "hour:"+getStarHour()+","+
-                "minute:"+getStarMinute()+""+
-                "},"+
-                "end:{"+
-                "hour:"+getEndHour()+","+
-                "minute:"+getEndMinute()+""+
-                "}"+
-                "}"+
-                "},"+contactsString+
-                "}";
-
-        return json;
+        jsonString = json.toString();
+        Log.i("RESTAURANT_JSON", jsonString);
+        return jsonString;
     }
 
     public String getScheduleTime(){

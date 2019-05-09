@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -30,16 +31,20 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CreateRestaurant extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
 
     private static final int REQUEST_GET_IMG_FILE = 1;
 
-    Rest_Data restaurant= new Rest_Data();
-
-    EditText description;
-    ImageView profile;
+    Rest_Data restaurant;
     ImageView newLocation;
+
+    ArrayList<String> nameContact = new ArrayList<>();
+    ArrayList<String> valueContact = new ArrayList<>();
+
+    ArrayList<Bitmap> images = new ArrayList<>();
 
     // Toma de datos
     Double latitud;
@@ -62,19 +67,12 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     String categoreichon;
     EditText contacto;
     EditText numero;
-    int horaIniH;
-    int minIniM;
-    int horaFinH;
-    int minFinM;
-
 
     private boolean checkComplition(){
-
         return true;
     }
 
 
-    //Boton de success ARREGLAR
     public void createRestaurant(View view){
 
         restaurant.name= name.getText().toString();
@@ -99,49 +97,59 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
             restaurant.schedule.add("SUNDAY");
         }
 
-        restaurant.nameContact.add(contacto.getText().toString());
-        restaurant.valueContact.add(numero.getText().toString());
+
+        restaurant.setNameContact(nameContact);
+        restaurant.setValueContact(valueContact);
         restaurant.score=Integer.parseInt(estrellaAparecio);
 
 
         String horaIniP  = horaI.getText().toString();
         int ind;
         ind = horaIniP.indexOf(":",0);
-        restaurant.starHour = Integer.parseInt(horaIniP.substring(0,ind-1));
+        restaurant.starHour = Integer.parseInt(horaIniP.substring(0,ind));
         restaurant.starMinute = Integer.parseInt(horaIniP.substring(ind+1,horaIniP.length()));
-
-        System.out.println(restaurant.starHour);
-        System.out.println(restaurant.starMinute);
 
 
         String horaFinP  = horaF.getText().toString();
         ind = horaFinP.indexOf(":",0);
-        restaurant.endHour = Integer.parseInt(horaFinP.substring(0,ind-1));
+        restaurant.endHour = Integer.parseInt(horaFinP.substring(0,ind));
         restaurant.endMinute = Integer.parseInt(horaFinP.substring(ind+1,horaFinP.length()));
 
 
-        ConnectAPI connectAPI = new ConnectAPI();
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
-        String session = sharedPreferences.getString("session", null);
-        connectAPI.createRestaurant(restaurant, session);
-
+        restaurant.printObject();
+        restaurant.getJson();
+        uploadRestaurant(restaurant);
 
         //takeInfo ();
-        Intent siguiente = new Intent(this, map.class);
-        startActivity(siguiente);
+        //Intent siguiente = new Intent(this, map.class);
+        //startActivity(siguiente);
 
     }
+
+
+    private void uploadRestaurant(Rest_Data restaurant){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String session = sharedPreferences.getString("session", null);
+
+        ConnectAPI connectAPI = new ConnectAPI();
+        connectAPI.createRestaurant(restaurant, session);
+
+        connectAPI = new ConnectAPI();
+        connectAPI.uploadPhotos(session, images);
+    }
+
 //____________________________________________________________________________________________________________________--
-    public void getLocation(View view){
-
-    }
 
     public void addContact(View view){
         TextView name = findViewById(R.id.contactNameEntry);
         TextView value = findViewById(R.id.valueEntry);
 
+        nameContact.add(name.getText().toString());
+        valueContact.add(value.getText().toString());
+
+
         TextView textView = new TextView(this);
-        String contact = name.getText().toString() + " : " +value.getText().toString();
+        String contact = name.getText().toString() + ": " +value.getText().toString();
         textView.setText(contact);
 
         LinearLayout contacsLayout = findViewById(R.id.contactsLayout);
@@ -196,6 +204,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
                     cursor.close();
 
                     Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                    images.add(bitmap);
                     ImageView imageView = new ImageView(this);
                     imageView.setImageBitmap(bitmap);
 
@@ -214,6 +223,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         //datos
         latitud = getIntent().getDoubleExtra("lati",0.0);
         longitud = getIntent().getDoubleExtra("longi",0.0);
+
         name= findViewById(R.id.Name);
         lun= findViewById(R.id.lunes);
         mar= findViewById(R.id.Martes);
@@ -227,7 +237,6 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         precio= findViewById(R.id.prices);
         categoria=findViewById(R.id.tipo);
         estrellitaDondeEstas=findViewById(R.id.estre);
-        //contacto=findViewById(R.id.contact);
         numero=findViewById(R.id.number);
         //______________________________________________________________________________
 
@@ -258,7 +267,8 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         newLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getApplicationContext(), "Guardando Localización", Toast.LENGTH_LONG).show();
+                String mensaje = "La localizacion actual es: latitud: " + latitud + ", longitud: " + longitud + ".";
+                Toast.makeText(getApplicationContext(), mensaje, Toast.LENGTH_LONG).show();
             }
         });
 
