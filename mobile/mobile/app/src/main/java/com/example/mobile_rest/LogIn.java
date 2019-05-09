@@ -69,6 +69,7 @@ public class LogIn extends AppCompatActivity {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("session", session);
+            editor.putString("email", email.getText().toString());
             editor.commit();
 
             Intent siguiente = new Intent(this, map.class);

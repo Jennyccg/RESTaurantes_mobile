@@ -14,259 +14,332 @@
         android:background="@android:color/transparent"
         app:srcCompat="@mipmap/background" />
 
-    <LinearLayout
-        android:id="@+id/mainLayout"
+    <ScrollView
+        android:id="@+id/normalScroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <HorizontalScrollView
-            android:id="@+id/imagesScroll"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/imagesLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/common_google_signin_btn_text_light_default"
-                android:orientation="horizontal" />
-        </HorizontalScrollView>
+            <HorizontalScrollView
+                android:id="@+id/imagesScroll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <ScrollView
-            android:id="@+id/normalScroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/imagesLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/common_google_signin_btn_text_light_default"
+                    android:orientation="horizontal" >
 
-            <LinearLayout
+                    <ImageView
+                        android:id="@+id/userAddImage"
+                        android:layout_width="182dp"
+                        android:layout_height="166dp"
+                        android:layout_weight="1"
+                        android:background="@color/common_google_signin_btn_text_light_default"
+                        android:onClick="getImage"
+                        app:srcCompat="@android:drawable/ic_input_add" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="42dp" />
+
+            <TextView
+                android:id="@+id/restaurantTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@color/common_google_signin_btn_text_light_disabled"
+                android:text="Nombre del restaurante"
+                android:textAlignment="center"
+                android:textSize="30sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/stars"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imagesScroll"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/restaurantTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="41dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="38dp"
-                    android:text="Nombre del restaurante"
-                    android:textAlignment="center"
-                    android:textSize="30sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/stars"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/imagesScroll"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:id="@+id/stars"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/InformationLayout"
+                app:layout_constraintStart_toEndOf="@+id/imagesScroll"
+                app:layout_constraintTop_toBottomOf="@+id/restaurantTitle">
 
-                <LinearLayout
-                    android:id="@+id/stars"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
-                    android:layout_marginBottom="22dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@+id/InformationLayout"
-                    app:layout_constraintStart_toEndOf="@+id/imagesScroll"
-                    app:layout_constraintTop_toBottomOf="@+id/restaurantTitle">
-
-                    <ImageView
-                        android:id="@+id/firstStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="rateStar"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:layout_editor_absoluteX="37dp"
-                        tools:layout_editor_absoluteY="203dp" />
-
-                    <ImageView
-                        android:id="@+id/secondStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="rateStar"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:layout_editor_absoluteX="37dp"
-                        tools:layout_editor_absoluteY="203dp" />
-
-                    <ImageView
-                        android:id="@+id/thirdStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="rateStar"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:layout_editor_absoluteX="37dp"
-                        tools:layout_editor_absoluteY="203dp" />
-
-                    <ImageView
-                        android:id="@+id/fourthStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="rateStar"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:layout_editor_absoluteX="37dp"
-                        tools:layout_editor_absoluteY="203dp" />
-
-                    <ImageView
-                        android:id="@+id/fifthStar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:onClick="rateStar"
-                        app:srcCompat="@android:drawable/btn_star_big_on"
-                        tools:layout_editor_absoluteX="37dp"
-                        tools:layout_editor_absoluteY="203dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/InformationLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@+id/tituloComentarios"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/stars">
-
-                    <LinearLayout
-                        android:id="@+id/ScoreLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="62dp"
-                        android:orientation="horizontal"
-                        tools:layout_editor_absoluteX="0dp"
-                        tools:layout_editor_absoluteY="334dp">
-
-                        <TextView
-                            android:id="@+id/scoreTitle"
-                            android:layout_width="67dp"
-                            android:layout_height="26dp"
-                            android:text="Score"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:layout_editor_absoluteX="28dp"
-                            tools:layout_editor_absoluteY="210dp" />
-
-                        <TextView
-                            android:id="@+id/restaurantScore"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/ScheduleLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        tools:layout_editor_absoluteY="273dp">
-
-                        <TextView
-                            android:id="@+id/scheduleTitle"
-                            android:layout_width="94dp"
-                            android:layout_height="64dp"
-                            android:text="Schedule"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:layout_editor_absoluteX="28dp"
-                            tools:layout_editor_absoluteY="303dp" />
-
-                        <TextView
-                            android:id="@+id/restaurantSchedule"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/timeLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="58dp"
-                        android:orientation="horizontal"
-                        tools:layout_editor_absoluteX="16dp"
-                        tools:layout_editor_absoluteY="337dp">
-
-                        <TextView
-                            android:id="@+id/TimeTitle"
-                            android:layout_width="94dp"
-                            android:layout_height="64dp"
-                            android:text="Open at:"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            tools:layout_editor_absoluteX="28dp"
-                            tools:layout_editor_absoluteY="303dp" />
-
-                        <TextView
-                            android:id="@+id/restaurantTime"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="TextView" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tituloComentarios"
+                <ImageView
+                    android:id="@+id/firstStar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="Comentarios"
-                    android:textAllCaps="false"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/commentLayout"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/InformationLayout" />
+                    android:layout_weight="1"
+                    android:onClick="rateStar"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:layout_editor_absoluteX="37dp"
+                    tools:layout_editor_absoluteY="203dp" />
+
+                <ImageView
+                    android:id="@+id/secondStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="rateStar"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:layout_editor_absoluteX="37dp"
+                    tools:layout_editor_absoluteY="203dp" />
+
+                <ImageView
+                    android:id="@+id/thirdStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="rateStar"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:layout_editor_absoluteX="37dp"
+                    tools:layout_editor_absoluteY="203dp" />
+
+                <ImageView
+                    android:id="@+id/fourthStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="rateStar"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:layout_editor_absoluteX="37dp"
+                    tools:layout_editor_absoluteY="203dp" />
+
+                <ImageView
+                    android:id="@+id/fifthStar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="rateStar"
+                    app:srcCompat="@android:drawable/btn_star_big_on"
+                    tools:layout_editor_absoluteX="37dp"
+                    tools:layout_editor_absoluteY="203dp" />
+            </LinearLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="42dp" />
+
+            <LinearLayout
+                android:id="@+id/InformationLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toTopOf="@+id/tituloComentarios"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/stars">
 
                 <LinearLayout
-                    android:id="@+id/postCommentLayout"
+                    android:id="@+id/typeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="337dp">
 
-                    <EditText
-                        android:id="@+id/comment"
-                        android:layout_width="301dp"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:hint="Comentario"
-                        android:inputType="textLongMessage|textAutoCorrect|textMultiLine|text"
-                        tools:layout_editor_absoluteX="16dp"
-                        tools:layout_editor_absoluteY="373dp" />
+                    <TextView
+                        android:id="@+id/TipoTitle"
+                        android:layout_width="116dp"
+                        android:layout_height="64dp"
+                        android:text="Tipo de comida:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="28dp"
+                        tools:layout_editor_absoluteY="303dp" />
 
-                    <ImageButton
-                        android:id="@+id/sendComment"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/restaurantType"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/colorPrimary"
-                        android:onClick="postComment"
-                        app:srcCompat="@android:drawable/ic_menu_send" />
-
+                        android:text="TextView" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/commentLayout"
+                    android:id="@+id/priceLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:showDividers="middle"></LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="337dp">
+
+                    <TextView
+                        android:id="@+id/PriceTitle"
+                        android:layout_width="116dp"
+                        android:layout_height="64dp"
+                        android:text="Precio:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="28dp"
+                        tools:layout_editor_absoluteY="303dp" />
+
+                    <TextView
+                        android:id="@+id/restaurantPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ScoreLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="334dp">
+
+                    <TextView
+                        android:id="@+id/scoreTitle"
+                        android:layout_width="116dp"
+                        android:layout_height="64dp"
+                        android:text="Calificación:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="28dp"
+                        tools:layout_editor_absoluteY="210dp" />
+
+                    <TextView
+                        android:id="@+id/restaurantScore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ScheduleLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:layout_editor_absoluteY="273dp">
+
+                    <TextView
+                        android:id="@+id/scheduleTitle"
+                        android:layout_width="116dp"
+                        android:layout_height="64dp"
+                        android:text="Schedule"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="28dp"
+                        tools:layout_editor_absoluteY="303dp" />
+
+                    <TextView
+                        android:id="@+id/restaurantSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/timeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="337dp">
+
+                    <TextView
+                        android:id="@+id/TimeTitle"
+                        android:layout_width="115dp"
+                        android:layout_height="64dp"
+                        android:text="Horario:"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        tools:layout_editor_absoluteX="28dp"
+                        tools:layout_editor_absoluteY="303dp" />
+
+                    <TextView
+                        android:id="@+id/restaurantTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="TextView" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/infoContactsTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Contactos"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/infoContactsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="13dp"
+                tools:layout_editor_absoluteY="376dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="42dp" />
+
+            <TextView
+                android:id="@+id/tituloComentarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comentarios"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:id="@+id/postCommentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/comment"
+                    android:layout_width="301dp"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Comentario"
+                    android:inputType="textLongMessage|textAutoCorrect|textMultiLine|text"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="373dp" />
+
+                <ImageButton
+                    android:id="@+id/sendComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:onClick="postComment"
+                    app:srcCompat="@android:drawable/ic_menu_send" />
 
             </LinearLayout>
-        </ScrollView>
 
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/commentLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:showDividers="middle"></LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

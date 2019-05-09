@@ -367,6 +367,29 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
 
     }
 
+    public int getStarFromEmail(String restaurantId, String email){
+        int starQuantity = 0;
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+restaurantId+"/scores/"+email;
+
+        String response = null;
+        try {
+            response = execute(url, "GET", "").get();
+
+            Log.i("LOG_STARS_RESPONSE", response);
+            JSONObject json = new JSONObject(response);
+            json = new JSONObject(json.getString("data"));
+            json = new JSONObject(json.getString("score"));
+            starQuantity = json.getInt("score");
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return starQuantity;
+    }
 
     public void uploadPhoto(String session, String restaurantId, Bitmap bitmap){
 

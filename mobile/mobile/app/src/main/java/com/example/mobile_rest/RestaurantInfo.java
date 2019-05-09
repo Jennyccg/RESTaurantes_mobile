@@ -1,11 +1,20 @@
 package com.example.mobile_rest;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -34,7 +43,13 @@ public class RestaurantInfo extends AppCompatActivity {
     private void setInformation(){
         downloadAPI();
         updateComments();
-        setStars(0);
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String email = sharedPreferences.getString("email", null);
+        ConnectAPI connectAPI = new ConnectAPI();
+        int score = connectAPI.getStarFromEmail(id, email);
+
+        setStars(score);
     }
 
     private void downloadAPI(){
@@ -46,6 +61,9 @@ public class RestaurantInfo extends AppCompatActivity {
         setTitle(restaurant.getName());
         setScore(String.valueOf(restaurant.getScore()));
         setTime(restaurant.getScheduleTime());
+        setContacts(restaurant.getNameContact(), restaurant.getValueContact());
+        setType(restaurant.getType());
+        setCost(restaurant.getPrice());
 
         ArrayList<String> days = restaurant.getSchedule();
         String schedule = "";
@@ -57,6 +75,25 @@ public class RestaurantInfo extends AppCompatActivity {
 
         setImage(restaurant.getAllBitmaps());
 
+    }
+
+    private void setType(String type){
+        TextView textView = findViewById(R.id.restaurantType);
+        textView.setText(type);
+    }
+
+    private void setCost(String cost){
+        TextView textView = findViewById(R.id.restaurantPrice);
+        textView.setText(cost);
+    }
+
+    private void setContacts(ArrayList<String> name, ArrayList<String> value){
+        LinearLayout linearLayout = findViewById(R.id.infoContactsLayout);
+        for(int i = 0; i < name.size(); ++i){
+            TextView textView = new TextView(this);
+            textView.setText(name.get(i) + ": " + value.get(i));
+            linearLayout.addView(textView);
+        }
     }
 
     private void setTitle(String title){
@@ -113,7 +150,6 @@ public class RestaurantInfo extends AppCompatActivity {
         }
     }
 
-
     //-----Methods to connect with API (Get and Set)
     private void updateComments(){
         final ArrayList<String> comments = new ArrayList<String>();
@@ -160,6 +196,80 @@ public class RestaurantInfo extends AppCompatActivity {
         connectAPI.uploadStars(id, String.valueOf(quantity), session);
         //Se suben las estrellas a la api
         return true;
+    }
+
+    public void getImage(View view){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            //sin permiso
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 782);
+        } else {
+            //con permiso
+            cargarImagen();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions , int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if(requestCode == 782) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Dieron permiso
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    cargarImagen();
+                }
+            }
+        }
+    }
+
+    public void cargarImagen(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        startActivityForResult(intent,123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case 123:
+                    Uri imageUri = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+
+                    cursor.close();
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    String session = sharedPreferences.getString("session", null);
+
+                    ConnectAPI connectAPI = new ConnectAPI();
+                    connectAPI.uploadPhoto(session, id, bitmap);
+
+                    int width = bitmap.getWidth();
+                    int height = bitmap.getHeight();
+                    if(width > 1080 || height > 720){
+                        width = (int) (0.4 * width);
+                        height = (int) (0.4 * height);
+                        bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+                    }
+
+                    ImageView imageView = new ImageView(this);
+                    imageView.setImageBitmap(bitmap);
+
+                    LinearLayout linearLayout = findViewById(R.id.imagesLayout);
+                    linearLayout.addView(imageView);
+
+                    break;
+            }
+        }
     }
 
 

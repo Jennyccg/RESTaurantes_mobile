@@ -30,6 +30,7 @@ public class CreateAccount extends AppCompatActivity {
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("session", session);
+            editor.putString("email", email);
             editor.commit();
             return true;
         }
