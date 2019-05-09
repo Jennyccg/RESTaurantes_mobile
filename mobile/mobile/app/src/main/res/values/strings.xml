@@ -22,6 +22,7 @@
         <item> </item>
         <item>FAST FOOD</item>
         <item>GOURMET</item>
+        <item>CAFE</item>
     </string-array>
 
     <string-array name="stars">

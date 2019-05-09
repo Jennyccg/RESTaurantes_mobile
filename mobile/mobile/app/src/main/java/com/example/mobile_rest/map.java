@@ -332,7 +332,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
             public void onMapLongClick(LatLng latLng) {
 
 
-                Toast.makeText(getApplicationContext(),String.valueOf(latLng.latitude), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),String.valueOf(latLng.latitude), Toast.LENGTH_LONG).show();
 
 
             }
@@ -347,7 +347,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Toast.makeText(getApplicationContext(),"("+ String.valueOf(latLng.latitude)  + String.valueOf(latLng.longitude)+ ")", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(),"("+ String.valueOf(latLng.latitude)  + String.valueOf(latLng.longitude)+ ")", Toast.LENGTH_LONG).show();
             }
         });
     }
