@@ -22,6 +22,11 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
     //falta estrellas
     Double latitud;
     Double longitud;
+
+    //guarda datos bot
+    Double latW;
+    Double longW;
+
     String preciesote;
     String cate;
     Rest_Data Rest= new Rest_Data();
@@ -38,6 +43,11 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
         precio= findViewById(R.id.priceW);
         categoria=findViewById(R.id.tipo_comida);
         nombre=(EditText) findViewById(R.id.nomb);
+
+        //datos
+        latitud = getIntent().getDoubleExtra("lat",0.0);
+        longitud = getIntent().getDoubleExtra("longi",0.0);
+        Toast.makeText(getApplicationContext(),String.valueOf(latitud)  + String.valueOf(longitud), Toast.LENGTH_LONG).show();
 
 
         ConnectAPI connectAPI = new ConnectAPI();
@@ -69,42 +79,388 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
 
 
 public void filtrar(View view){
-
+        sRest.clear();
+        latW=0.0;
+        longW= 0.0;
+        boolean encontro = false;
+        double distanciaLat=0.0;
+        double distanciaLong=0.0;
         for (int k=0; k< todo_datos.size(); k++){
 
-            if (!preciesote.equals("")){
+            if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())){
+                //Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " categorias iguales" , Toast.LENGTH_LONG).show();
+                sRest.add(todo_datos.get(k).name);
 
-                if (!cate.equals("")){
-                    if (!nombre.getText().toString().equals("")){
+            }
 
-                        //no olvidar estrellas
-                        if (todo_datos.get(k).price.toUpperCase()== preciesote.toUpperCase() && todo_datos.get(k).type.toUpperCase()==cate.toUpperCase() && todo_datos.get(k).name.toUpperCase() ==nombre.getText().toString().toUpperCase()){
-                            sRest.add(todo_datos.get(k).name + " " + String.valueOf(todo_datos.get(k).score));
+            if (!cate.toUpperCase().equals("")){
+
+
+                //Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " categorias no vacio" , Toast.LENGTH_LONG).show();
+
+                if (!preciesote.toUpperCase().equals("")){
+
+
+                    if(!nombre.getText().toString().toUpperCase().equals("")){
+
+
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+                                distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
+                                distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
+                                //falta estrellas
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())  && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+                            }else{
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+                            }
+
+
+                        }else{
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) && (distanciaLat<1 && distanciaLong<1)){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
                         }
-                    }else{
-                        Toast.makeText(getApplicationContext(), String.valueOf(k) + " "+ todo_datos.get(k).price.toUpperCase()+ "  "+  preciesote.toUpperCase().trim() , Toast.LENGTH_LONG).show();
-                        //Toast.makeText(getApplicationContext(), cate , Toast.LENGTH_LONG).show();
-                        //&&
 
-                        if ((todo_datos.get(k).price.toUpperCase().trim ().equals(preciesote.toUpperCase().trim()) )   ){
-                            Toast.makeText(getApplicationContext(), todo_datos.get(k).price.toUpperCase().trim (), Toast.LENGTH_LONG).show();
 
-                            sRest.add(todo_datos.get(k).name + " " + String.valueOf(todo_datos.get(k).score));
+                    }else {
+                        // es de nomb
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                //meter estrellas
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                //falta estrellas
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+                        }else{
+                            //estrellas
+
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && (distanciaLat<1 && distanciaLong<1)  ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+                            }else {
+                                //vacio
+                            }
                         }
-
-
                     }
 
-                }else{
 
-                    if (todo_datos.get(k).price== preciesote ){
-                        sRest.add(todo_datos.get(k).name + " " + String.valueOf(todo_datos.get(k).score));
+
+
+
+
+                }else{
+                    //  es de precio
+                    if (!nombre.getText().toString().toUpperCase().equals("")){
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                //meter estrellas
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())  && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                //falta estrellas
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+                        }else{
+
+                            // de las estrellas
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())  && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else{
+
+                                //limpio
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())  && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+                            }
+
+                        }
+
+
+                    }else{
+                        // else del nombre dif null
+
+
+                        if (true){
+                            if (latW!= 0.0 && longW!=0.0){
+                                //falta estrellas
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())  && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+
+                            }else{
+                                    //falta estrellas
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase()) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+
+                        }else{
+                            if (latW!= 0.0 && longW!=0.0){
+                                if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())  && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+                            }
+                        }
                     }
 
                 }
 
+
+            }else{
+                // es de categ
+
+                if (!preciesote.toUpperCase().equals("")){
+
+
+                    if(!nombre.getText().toString().toUpperCase().equals("")){
+
+
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+                                distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
+                                distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
+                                //falta estrellas
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())  && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+                            }else{
+
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+                            }
+
+
+                        }else{
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) && (distanciaLat<1 && distanciaLong<1)){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+                        }
+
+
+                    }else {
+                        // es de nomb
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                //meter estrellas
+
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                //falta estrellas
+                                if ( preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+                        }else{
+                            //estrellas
+
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && (distanciaLat<1 && distanciaLong<1)  ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+                            }else {
+                                //vacio
+                            }
+                        }
+                    }
+
+
+
+
+
+
+                }
+
             }
-            //sRest.add(todo_datos.get(k).name + " " + String.valueOf(todo_datos.get(k).score));
+
         }
 
     adaptadorRestaurante = new ArrayAdapter(this,android.R.layout.simple_list_item_1, sRest);
@@ -116,11 +472,11 @@ public void filtrar(View view){
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if ( parent.getId()==R.id.priceW){
             preciesote = parent.getItemAtPosition(position).toString();
-            Toast.makeText(getApplicationContext(), preciesote, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), preciesote, Toast.LENGTH_LONG).show();
         }
         else if (parent.getId()==R.id.tipo_comida){
             cate = parent.getItemAtPosition(position).toString();
-            Toast.makeText(getApplicationContext(), cate, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), cate, Toast.LENGTH_LONG).show();
         }
 
     }
@@ -128,5 +484,12 @@ public void filtrar(View view){
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    public void tomaLocalizacion(View view){
+        //no esta trayendo datos
+        latW=latitud;
+        Toast.makeText(getApplicationContext(),   " lat no vacio" + String.valueOf(latW)  , Toast.LENGTH_LONG).show();
+        longW=longitud;
     }
 }

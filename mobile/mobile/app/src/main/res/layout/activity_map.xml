@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mapLayout"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/background"
+    android:orientation="vertical">
     <!--xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mapLayout" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent"> -->
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_blue_dark"
+        android:layout_height="53dp"
+        android:background="@mipmap/background"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/bmapa"
-            android:layout_width="wrap_content"
+            android:layout_width="138dp"
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="5dp"
@@ -35,30 +36,19 @@
             android:onClick="restaurants"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
-            android:text="Rest"
+            android:text="Restaurantes"
             android:textColor="@android:color/holo_blue_dark" />
 
 
         <Button
             android:id="@+id/brest"
-            android:layout_width="wrap_content"
+            android:layout_width="122dp"
             android:layout_height="wrap_content"
 
             android:onClick="GoSearch"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Buscar"
-            android:textColor="@android:color/holo_blue_dark" />
-
-        <Button
-            android:id="@+id/comentar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="coment"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="Coment"
             android:textColor="@android:color/holo_blue_dark" />
 
 
