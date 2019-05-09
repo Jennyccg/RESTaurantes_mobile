@@ -64,6 +64,9 @@ public class LogIn extends AppCompatActivity {
 
 
     public void syncFacebook(View view){
+        Intent siguiente = new Intent(this, CreateRestaurant.class);
+        startActivity(siguiente);
+
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             //sin permiso
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 782);

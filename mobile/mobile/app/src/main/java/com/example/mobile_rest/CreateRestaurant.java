@@ -6,11 +6,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +23,9 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -35,6 +40,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     EditText description;
     ImageView profile;
     ImageView newLocation;
+
     // Toma de datos
     Double latitud;
     Double longitud;
@@ -60,10 +66,6 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     int minIniM;
     int horaFinH;
     int minFinM;
-
-
-
-
 
 
     private boolean checkComplition(){
@@ -133,47 +135,77 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     public void getLocation(View view){
 
     }
-// NO FUNCIONAAAAAA
-    public void getImage(View view){
 
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("image/*");
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQUEST_GET_IMG_FILE);
+    public void addContact(View view){
+        TextView name = findViewById(R.id.contactNameEntry);
+        TextView value = findViewById(R.id.valueEntry);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.ACCESS_FINE_LOCATION }, 0);
-        }
-        else {
+        TextView textView = new TextView(this);
+        String contact = name.getText().toString() + " : " +value.getText().toString();
+        textView.setText(contact);
 
-        }
-
+        LinearLayout contacsLayout = findViewById(R.id.contactsLayout);
+        contacsLayout.addView(textView);
     }
 
-
+    public void getImage(View view){
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            //sin permiso
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 782);
+        } else {
+            //con permiso
+            cargarImagen();
+        }
+    }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-        if(resultCode == Activity.RESULT_OK && requestCode == REQUEST_GET_IMG_FILE){
+    public void onRequestPermissionsResult(int requestCode, String[] permissions , int[] grantResults){
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-            Uri selectedImage = data.getData();
-
-            String[] filePath = {MediaStore.Images.Media.DATA};
-
-            Cursor cursor = getContentResolver().query(selectedImage, filePath, null, null, null);
-            cursor.moveToFirst();
-
-            int columnIndex = cursor.getColumnIndex(filePath[0]);
-            String imgDecodableString = cursor.getString(columnIndex);
-
-            cursor.close();
-
-            profile.setImageBitmap(BitmapFactory.decodeFile(imgDecodableString));
-
-            Log.i("LOG_K", "Se escribio la imagen.");
+        if(requestCode == 782) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                //Dieron permiso
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    cargarImagen();
+                }
+            }
         }
     }
 
+    public void cargarImagen(){
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        String[] mimeTypes = {"image/jpeg", "image/png"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES,mimeTypes);
+        startActivityForResult(intent,123);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == Activity.RESULT_OK){
+            switch (requestCode){
+                case 123:
+                    Uri imageUri = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                    Cursor cursor = getContentResolver().query(imageUri, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+
+                    cursor.close();
+
+                    Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                    ImageView imageView = new ImageView(this);
+                    imageView.setImageBitmap(bitmap);
+
+                    LinearLayout linearLayout = findViewById(R.id.imagesUploadScrollLayout);
+                    linearLayout.addView(imageView);
+
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +227,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         precio= findViewById(R.id.prices);
         categoria=findViewById(R.id.tipo);
         estrellitaDondeEstas=findViewById(R.id.estre);
-        contacto=findViewById(R.id.contact);
+        //contacto=findViewById(R.id.contact);
         numero=findViewById(R.id.number);
         //______________________________________________________________________________
 
@@ -219,11 +251,6 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         estrellitaDondeEstas.setOnItemSelectedListener(this);
 
 
-
-
-
-        profile = findViewById(R.id.newProfileImg);
-        profile.setImageResource(R.mipmap.ic_launcher);
         restaurant = new Rest_Data();
         newLocation = (ImageView) findViewById(R.id.newLocation);
 
@@ -240,7 +267,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if ( parent.getId()==R.id.prices){
+        if (parent.getId()==R.id.prices){
             preciesote = parent.getItemAtPosition(position).toString();
         }
         else if (parent.getId()==R.id.tipo){
@@ -255,4 +282,5 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
 }
