@@ -212,7 +212,7 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_restaurant);
         //datos
-        latitud = getIntent().getDoubleExtra("lati",0.0);
+        latitud = getIntent().getDoubleExtra("lat",0.0);
         longitud = getIntent().getDoubleExtra("longi",0.0);
         name= findViewById(R.id.Name);
         lun= findViewById(R.id.lunes);
