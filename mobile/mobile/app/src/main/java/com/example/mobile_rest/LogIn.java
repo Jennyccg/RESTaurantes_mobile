@@ -54,7 +54,9 @@ public class LogIn extends AppCompatActivity {
     }
 
     public void syncFacebook(View view){
-
+        ConnectAPI connectAPI = new ConnectAPI();
+        String id = connectAPI.getLastId();
+        Log.i("ID", id);
     }
 
     public void singIn(View view){

@@ -118,12 +118,20 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
 
         restaurant.printObject();
         restaurant.getJson();
+
+        Toast toast = Toast.makeText(this, "Subiendo restaurante...", Toast.LENGTH_SHORT);
+        toast.show();
+
         uploadRestaurant(restaurant);
 
-        //takeInfo ();
-        //Intent siguiente = new Intent(this, map.class);
-        //startActivity(siguiente);
 
+        //takeInfo ();
+
+        toast = Toast.makeText(this, "Retaurante creado con exito.", Toast.LENGTH_SHORT);
+        toast.show();
+
+        Intent siguiente = new Intent(this, map.class);
+        startActivity(siguiente);
     }
 
 
@@ -132,10 +140,15 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         String session = sharedPreferences.getString("session", null);
 
         ConnectAPI connectAPI = new ConnectAPI();
-        connectAPI.createRestaurant(restaurant, session);
+        connectAPI.createRestaurant(restaurant, session, images);
 
         connectAPI = new ConnectAPI();
-        connectAPI.uploadPhotos(session, images);
+        String id = connectAPI.getLastId();
+
+        for(int i = 0; i < images.size() ; ++i){
+            connectAPI = new ConnectAPI();
+            connectAPI.uploadPhoto(session, id, images.get(i));
+        }
     }
 
 //____________________________________________________________________________________________________________________--

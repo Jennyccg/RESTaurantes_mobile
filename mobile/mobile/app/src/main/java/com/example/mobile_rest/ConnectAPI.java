@@ -217,8 +217,33 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
         return restaurantes;
     }
 
+    public String getLastId(){
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/all";
+        ArrayList<Rest_Data> restaurantes = new ArrayList<Rest_Data>();
+        String response = "";
+
+        try {
+            response = execute(url, "GET", "").get();
+
+            JSONObject json = new JSONObject(response);
+            json = new JSONObject(json.getString("data"));
+
+            JSONArray jsonArray = new JSONArray(json.getString("restaurants"));
+            json = new JSONObject(jsonArray.get(jsonArray.length()-1).toString());
+            response = json.getString("_id");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
     //Crea un restaurante por medio de un objeto restaurant
-    public boolean createRestaurant(Rest_Data restaurant, String session){
+    public Boolean createRestaurant(Rest_Data restaurant, String session, ArrayList<Bitmap> bitmaps){
         String url = "http://restaurants-tec.herokuapp.com/restaurants/" + restaurant.getJson();
         String json = "{\"session\" : \""+session+"\"}";
 
@@ -234,8 +259,14 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }//checkError(response)
+        }
 
+        //String id = getLastId();
+        //Log.i("RESTUpload", id);
+
+        if(bitmaps.size() != 0){
+            Log.i("RESTUpload", "Hay imagenes.");
+        }
         return true;
     }
 
@@ -337,15 +368,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
     }
 
 
-    public void uploadPhotos(String session, ArrayList<Bitmap> bitmaps){
-        for(int i = 0 ; i < bitmaps.size() ; ++i){
-            uploadPhoto(session, bitmaps.get(i));
-        }
-    }
-
-    public void uploadPhoto(String session, Bitmap bitmap){
-
-        session = "5cbf7725a6db3500047d2e66";
+    public void uploadPhoto(String session, String restaurantId, Bitmap bitmap){
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG,100,byteArrayOutputStream);
@@ -360,7 +383,7 @@ public class ConnectAPI extends AsyncTask <String, String, String> {
             e.printStackTrace();
         }
 
-        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+"5cc798d15ffd132ba8ef017d"+"/images";
+        String url = "http://restaurants-tec.herokuapp.com/restaurants/"+restaurantId+"/images";
         String json = "";
         json = imageJson.toString();
         Log.i("IMAGE_REQUEST_RESPONSE", json);
