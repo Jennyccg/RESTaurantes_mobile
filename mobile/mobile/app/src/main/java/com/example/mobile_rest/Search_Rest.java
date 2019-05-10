@@ -1,5 +1,6 @@
 package com.example.mobile_rest;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +23,7 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
     //falta estrellas
     Double latitud;
     Double longitud;
-
+    String nombrelist;
     //guarda datos bot
     Double latW;
     Double longW;
@@ -80,8 +81,7 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
 
 public void filtrar(View view){
         sRest.clear();
-        latW=0.0;
-        longW= 0.0;
+
         boolean encontro = false;
         double distanciaLat=0.0;
         double distanciaLong=0.0;
@@ -459,6 +459,91 @@ public void filtrar(View view){
 
 
 
+                }else{
+                    //sin precio
+                    if(!nombre.getText().toString().toUpperCase().equals("")){
+
+
+
+                        if (true){
+
+                            if (latW!= 0.0 && longW!=0.0){
+                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+                                distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
+                                distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
+                                //falta estrellas
+                                if (nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())  && (distanciaLat<1 && distanciaLong<1) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+
+                            }else{
+
+                                if ( nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase())){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+                            }
+
+
+                        }else{
+                            if (latW!= 0.0 && longW!=0.0){
+
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) && (distanciaLat<1 && distanciaLong<1)){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }else {
+                                if (preciesote.toUpperCase().equals(todo_datos.get(k).price.toUpperCase()) && nombre.getText().toString().toUpperCase().equals(todo_datos.get(k).name.toUpperCase()) ){
+                                    encontro=true;
+                                    sRest.add(todo_datos.get(k).name);
+
+
+                                }else{
+                                    //de la comparacion
+                                }
+
+                            }
+
+
+                        }
+
+
+                    }else {
+                        Toast.makeText(getApplicationContext(),"ENTRO1 " + "lat"+ String.valueOf(latW)+ "long" + String.valueOf(longW),  Toast.LENGTH_LONG).show();
+
+                        if (latW!= 0.0 && longW!=0.0){
+
+                            distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
+                            distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
+                            Toast.makeText(getApplicationContext(),"ENTRO " + String.valueOf(todo_datos.get(k).latitude) + "hjgjg"+ String.valueOf(todo_datos.get(k).longitude) ,  Toast.LENGTH_LONG).show();
+                            if ((distanciaLat<93.7 && distanciaLong<93.7)){
+                                encontro=true;
+                                sRest.add(todo_datos.get(k).name);
+
+
+                            }else{
+                                //de la comparacion
+                            }
+
+                        }
+
+                    }
+
                 }
 
             }
@@ -467,7 +552,41 @@ public void filtrar(View view){
 
     adaptadorRestaurante = new ArrayAdapter(this,android.R.layout.simple_list_item_1, sRest);
     lvRest.setAdapter((ListAdapter) adaptadorRestaurante);
+
+    lvRest.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            int idRest;
+
+            nombrelist = sRest.get(position);
+            nextW(position);
+
+        }
+    });
 }
+
+    public void nextW(int posicion){
+
+       String indice="";
+        for (int k=0; k<todo_datos.size(); k++){
+
+            if (nombrelist.equals(todo_datos.get(k).name)){
+                indice= todo_datos.get(k).id;
+                // Toast.makeText(getApplicationContext(),"INDICE " + indice, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        Toast.makeText(this, todo_datos.get(posicion).getId(), Toast.LENGTH_SHORT).show();
+
+        Intent siguiente = new Intent( this,RestaurantInfo.class);
+
+        // envia un parametros
+        siguiente.putExtra("ID", indice);
+
+
+        startActivity(siguiente);
+
+    }
 
 
     @Override
@@ -491,7 +610,10 @@ public void filtrar(View view){
     public void tomaLocalizacion(View view){
         //no esta trayendo datos
         latW=latitud;
-        Toast.makeText(getApplicationContext(),   " lat no vacio" + String.valueOf(latW)  , Toast.LENGTH_LONG).show();
         longW=longitud;
+        Toast.makeText(getApplicationContext(),   " lat no vacio" + String.valueOf(longW)  , Toast.LENGTH_LONG).show();
+
     }
+
+
 }

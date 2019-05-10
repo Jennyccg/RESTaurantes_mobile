@@ -84,6 +84,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         }
 
         //miUbicacion();
+        //pintar puntos
     }
 
 
@@ -208,7 +209,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         mMap.setIndoorEnabled(false);
         mMap.setTrafficEnabled(false);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        Toast.makeText(getApplicationContext(), "onmapredy", Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(), "onmapredy", Toast.LENGTH_LONG).show();
         //mMap.moveCamera(CameraUpdateFactory.newCameraPosition(new CameraPosition.builder().target));
 
 
@@ -241,15 +242,17 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     }
 
     public void allMarkers(){
-        for(int k=0; k< puntos.size(); k++){
 
-            MostarMarcador(mMap,puntos.get(k).name,puntos.get(k).latitude,puntos.get(k).longitude);
+        for(int k=0; k< puntos.size(); k++){
+            //Toast.makeText(getApplicationContext(),String.valueOf(puntos.get(k).latitude)+ "_" +String.valueOf(puntos.get(k).longitude) , Toast.LENGTH_LONG).show();
+            MostarMarcador(mMap,puntos.get(k).name,puntos.get(k).longitude,puntos.get(k).latitude);
 
         }
+
     }
 
     private void agregarMarcador(double latitudA, double longituA) {
-        LatLng coordenadas = new LatLng(latitudA, longituA);
+        LatLng coordenadas = new LatLng(latitudA, longitudA);
         CameraUpdate miUbicacion;
         miUbicacion = CameraUpdateFactory.newLatLngZoom(coordenadas, 16);
         if (marcador != null) marcador.remove();
@@ -266,7 +269,9 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         if (location != null) {
             latitudA = location.getLatitude();
             longitudA = location.getLongitude();
-            agregarMarcador(latitudA, longitudA);
+            LatLng coordenadas = new LatLng(latitudA, longitudA);
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(coordenadas, 16));
+            //                          agregarMarcador(latitudA, longitudA);
 
             //Toast.makeText(getApplicationContext(),String.valueOf(latitudA)+ "_" +String.valueOf(longitudA) , Toast.LENGTH_LONG).show();
 
@@ -296,26 +301,46 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
+                String nombresito;
                 Integer clickCount = (Integer) marker.getTag();
-                if(doubleClick){
+                nombresito= marker.getTitle();
+                for (int k=0; k<puntos.size(); k++){
 
-                    String indice = "";
+                    if (nombresito.equals(puntos.get(k).name)){
+                        indice= puntos.get(k).id;
+                       // Toast.makeText(getApplicationContext(),"INDICE " + indice, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                //puntos.get(Integer.parseInt(marker.getId())).id
+                //Toast.makeText(getApplicationContext(),"antes double  " + marker.getId(), Toast.LENGTH_LONG).show();
+
+
+                if(doubleClick){
+                    //Toast.makeText(getApplicationContext(),"despues double", Toast.LENGTH_LONG).show();
+
+
+
+                    //String indice = "";
                     Intent det= new Intent(map.this, RestaurantInfo.class);
-                    indice =  marcaRest.id;
+
                      //envio
                     det.putExtra("ID", indice);
                     startActivity(det);
                 }
                 else{
                     doubleClick=true;
+
+                   // Toast.makeText(getApplicationContext(),"pone true double", Toast.LENGTH_LONG).show();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            //Toast.makeText(getApplicationContext(),"pone falso double", Toast.LENGTH_LONG).show();
                             doubleClick= false;
                         }
-                    }, 1500);
+                    }, 2000);
                 }
-                Toast.makeText(getApplicationContext(),marcaRest.name, Toast.LENGTH_LONG).show();
+
                 return false;
             }
 
