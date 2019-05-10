@@ -87,11 +87,13 @@ public void filtrar(View view){
         double distanciaLong=0.0;
         for (int k=0; k< todo_datos.size(); k++){
 
+            /*
             if (cate.toUpperCase().equals(todo_datos.get(k).type.toUpperCase())){
                 //Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " categorias iguales" , Toast.LENGTH_LONG).show();
                 sRest.add(todo_datos.get(k).name);
 
             }
+            */
 
             if (!cate.toUpperCase().equals("")){
 
