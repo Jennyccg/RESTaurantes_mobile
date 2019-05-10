@@ -310,5 +310,9 @@ public class RestaurantInfo extends AppCompatActivity {
         id = intent.getStringExtra("ID");
         setInformation();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        //imagen app
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
     }
 }

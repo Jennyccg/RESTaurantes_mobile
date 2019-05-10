@@ -93,5 +93,10 @@ public class LogIn extends AppCompatActivity {
         email = findViewById(R.id.login_email);
         password = findViewById(R.id.logInPassword);
 
+
+        //imagen app
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
     }
 }

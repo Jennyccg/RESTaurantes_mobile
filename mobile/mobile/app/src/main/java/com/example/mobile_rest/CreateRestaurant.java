@@ -251,6 +251,11 @@ public class CreateRestaurant extends AppCompatActivity  implements AdapterView.
         categoria=findViewById(R.id.tipo);
         estrellitaDondeEstas=findViewById(R.id.estre);
         numero=findViewById(R.id.number);
+
+        //imagen app
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         //______________________________________________________________________________
 
         ArrayAdapter <CharSequence> adapter= ArrayAdapter.createFromResource(this, R.array.prices, android.R.layout.simple_spinner_item);

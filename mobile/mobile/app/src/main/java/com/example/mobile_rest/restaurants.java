@@ -38,6 +38,11 @@ public class restaurants extends AppCompatActivity {
         rest = connectAPI.getAllStores(session);
 
 
+        //imagen app
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+
         lvRest = (ListView)findViewById(R.id.listaRest);
 
 
