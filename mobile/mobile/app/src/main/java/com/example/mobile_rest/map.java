@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
 
 public class map extends FragmentActivity implements OnMapReadyCallback {
-
+    // declaración variables
     private GoogleMap mMap;
     private Marker marcador ;
     Double latitudA;
@@ -193,6 +193,8 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
+
+    //metodo en el cual se  presenta el mapa y la ubicación actual del usuario.
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -240,7 +242,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
-
+    //metodo que toma la ubicacion de los restaurantes
     public void allMarkers(){
 
         for(int k=0; k< puntos.size(); k++){
@@ -264,7 +266,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
 
 
     }
-
+    //  metodo actualiza la ubicación del usuario
     private void actualizarMiUbicacion(Location location) {
         if (location != null) {
             latitudA = location.getLatitude();
@@ -280,7 +282,7 @@ public class map extends FragmentActivity implements OnMapReadyCallback {
     }
 
 // Marcar puntos
-
+    //metodo en donde se toma la ubicación de los restaurante spara marcarlos en el mapa
     public void MostarMarcador(GoogleMap googleMap,  String valorDesc, double valorLat, double valorLng)  {
 
 

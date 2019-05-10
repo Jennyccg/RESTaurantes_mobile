@@ -47,7 +47,7 @@ public class restaurants extends AppCompatActivity {
 
 
 
-
+        // se despliegan restaurantes que serán luego seleccionados para mostrar los detalles
         for ( int j =0 ; j< rest.size(); j++){
             sRest.add(rest.get(j).name);
         }
@@ -80,7 +80,7 @@ public class restaurants extends AppCompatActivity {
 
 
 
-
+// metodo para pasar a detalles por medio de id
     public void nextW(int posicion){
 
         // Toast.makeText(this, posicion, Toast.LENGTH_SHORT).show();

@@ -17,6 +17,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class Search_Rest extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    // Declaración variables
     Spinner precio;
     Spinner categoria;
     EditText nombre;
@@ -85,7 +87,7 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-
+// metodo en donde se realizan los diferentes filtros para la aplicacion
 public void filtrar(View view){
         sRest.clear();
 
@@ -573,7 +575,7 @@ public void filtrar(View view){
         }
     });
 }
-
+//metodo que envia los datos del restaurante solicitado
     public void nextW(int posicion){
 
        String indice="";
