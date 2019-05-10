@@ -59,6 +59,11 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
         todo_datos = connectAPI.getAllStores(session);
 
 
+        //imagen app
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+
         //Spinner
         //______________________________________________________________________________
 
