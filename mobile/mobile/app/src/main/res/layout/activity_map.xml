@@ -21,23 +21,25 @@
             android:layout_height="wrap_content"
 
             android:layout_marginLeft="5dp"
+            android:background="@mipmap/background"
             android:onClick="Goadd"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Agregar "
-            android:textColor="@android:color/holo_blue_dark"
+            android:textColor="@color/colorPrimary"
             android:textColorLink="@android:color/darker_gray" />
 
         <Button
             android:id="@+id/rest"
-            android:layout_width="wrap_content"
+            android:layout_width="151dp"
             android:layout_height="wrap_content"
 
+            android:background="@mipmap/background"
             android:onClick="restaurants"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Restaurantes"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:textColor="@color/colorPrimary" />
 
 
         <Button
@@ -45,11 +47,12 @@
             android:layout_width="122dp"
             android:layout_height="wrap_content"
 
+            android:background="@mipmap/background"
             android:onClick="GoSearch"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:text="Buscar"
-            android:textColor="@android:color/holo_blue_dark" />
+            android:textColor="@color/colorPrimary" />
 
 
     </LinearLayout>

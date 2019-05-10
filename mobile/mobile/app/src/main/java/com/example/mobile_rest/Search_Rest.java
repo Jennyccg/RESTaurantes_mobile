@@ -25,8 +25,8 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
     Double longitud;
     String nombrelist;
     //guarda datos bot
-    Double latW;
-    Double longW;
+    Double latW=0.0;
+    Double longW=0.0;
 
     String preciesote;
     String cate;
@@ -48,7 +48,9 @@ public class Search_Rest extends AppCompatActivity implements AdapterView.OnItem
         //datos
         latitud = getIntent().getDoubleExtra("lat",0.0);
         longitud = getIntent().getDoubleExtra("longi",0.0);
-        Toast.makeText(getApplicationContext(),String.valueOf(latitud)  + String.valueOf(longitud), Toast.LENGTH_LONG).show();
+
+
+        //Toast.makeText(getApplicationContext(),String.valueOf(latitud)  + String.valueOf(longitud), Toast.LENGTH_LONG).show();
 
 
         ConnectAPI connectAPI = new ConnectAPI();
@@ -110,7 +112,7 @@ public void filtrar(View view){
                         if (true){
 
                             if (latW!= 0.0 && longW!=0.0){
-                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
                                 distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
                                 distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
                                 //falta estrellas
@@ -347,7 +349,9 @@ public void filtrar(View view){
                         if (true){
 
                             if (latW!= 0.0 && longW!=0.0){
-                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+
+
+                                //Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
                                 distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
                                 distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
                                 //falta estrellas
@@ -468,7 +472,7 @@ public void filtrar(View view){
                         if (true){
 
                             if (latW!= 0.0 && longW!=0.0){
-                                Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
+                                // Toast.makeText(getApplicationContext(),  String.valueOf(k)+ " loca no vacio" , Toast.LENGTH_LONG).show();
                                 distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
                                 distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
                                 //falta estrellas
@@ -524,13 +528,13 @@ public void filtrar(View view){
 
 
                     }else {
-                        Toast.makeText(getApplicationContext(),"ENTRO1 " + "lat"+ String.valueOf(latW)+ "long" + String.valueOf(longW),  Toast.LENGTH_LONG).show();
+                       // Toast.makeText(getApplicationContext(),"ENTRO1 " + "lat"+ String.valueOf(latW)+ "long" + String.valueOf(longW),  Toast.LENGTH_LONG).show();
 
                         if (latW!= 0.0 && longW!=0.0){
 
                             distanciaLat=Math.abs(latW- todo_datos.get(k).latitude);
                             distanciaLong=Math.abs(longW- todo_datos.get(k).longitude);
-                            Toast.makeText(getApplicationContext(),"ENTRO " + String.valueOf(todo_datos.get(k).latitude) + "hjgjg"+ String.valueOf(todo_datos.get(k).longitude) ,  Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(),"ENTRO " + String.valueOf(todo_datos.get(k).latitude) + "hjgjg"+ String.valueOf(todo_datos.get(k).longitude) ,  Toast.LENGTH_LONG).show();
                             if ((distanciaLat<93.7 && distanciaLong<93.7)){
                                 encontro=true;
                                 sRest.add(todo_datos.get(k).name);
@@ -576,7 +580,7 @@ public void filtrar(View view){
             }
         }
 
-        Toast.makeText(this, todo_datos.get(posicion).getId(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, todo_datos.get(posicion).getId(), Toast.LENGTH_SHORT).show();
 
         Intent siguiente = new Intent( this,RestaurantInfo.class);
 
@@ -607,11 +611,12 @@ public void filtrar(View view){
 
     }
 
+    //Metodo: al presionar botón toma los datos actuales del usuario para comparar distancia
     public void tomaLocalizacion(View view){
-        //no esta trayendo datos
+
         latW=latitud;
         longW=longitud;
-        Toast.makeText(getApplicationContext(),   " lat no vacio" + String.valueOf(longW)  , Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(),   " lat no vacio" + String.valueOf(longW)  , Toast.LENGTH_LONG).show();
 
     }
 
